@@ -1,4 +1,4 @@
-const { existsSync } = require('fs');
+const { existsSync, realpathSync } = require('fs');
 const moduleAlias = require('module-alias');
 
 require('dw-api-mock/demandware-globals');
@@ -51,9 +51,9 @@ function setupAliases(cartridgesDir, cartridgePath, modulesDir, rootDir) {
       `[PLAYGROUND] [ALIAS="${alias}"] Aliasing module "${request}" for "${fromTarget}"`
     );
 
-    const customMock = request.replace('dw', `src/mocks/dw`);
+    const customMock = request.replace('dw', `mocks/dw`);
 
-    if (existsSync(`${customMock}.js`)) {
+    if (existsSync(`${__dirname}/${customMock}.js`)) {
       console.log('FOUND in custom mocks');
 
       return `${__dirname}/mocks/dw`;
@@ -61,12 +61,12 @@ function setupAliases(cartridgesDir, cartridgePath, modulesDir, rootDir) {
 
     const requestedModule = request.replace(
       'dw',
-      `${rootDir}/node_modules/dw-api-mock/dw`
+      realpathSync(`${__dirname}/../node_modules/dw-api-mock/dw`)
     );
 
     if (existsSync(requestedModule) || existsSync(`${requestedModule}.js`)) {
       console.log('FOUND in dw-api-mock');
-      return 'dw-api-mock/dw';
+      return `${__dirname}/../node_modules/dw-api-mock/dw`;
     }
   });
 }

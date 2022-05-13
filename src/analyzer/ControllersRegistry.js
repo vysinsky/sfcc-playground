@@ -6,7 +6,7 @@ class ControllersRegistry {
   registerAllControllers(cartridgesPath) {
     cartridgesPath.split(':').forEach((cartridge) => {
       const path = realpathSync(
-        `${__dirname}/../../sfra/cartridges/${cartridge}/cartridge/controllers`
+        `${playgroundConfig.cartridgesDir}/${cartridge}/cartridge/controllers`
       );
 
       readdirSync(path)
