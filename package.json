@@ -1,7 +1,7 @@
 {
   "version": "0.0.0-development",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "bin/sfcc-playground.js",
   "bin": {
     "sfcc-playground": "bin/sfcc-playground.js"
   },
