@@ -1,11 +1,27 @@
 const express = require('express');
+const dm = require('deepmerge');
 const { cosmiconfigSync } = require('cosmiconfig');
 
-const config = cosmiconfigSync('sfcc-playground').search()?.config || {};
+const cwd = process.cwd();
+const config = dm(
+  {
+    rootDir: cwd,
+    cartridgesDir: `${cwd}/cartridges`,
+    cartridgePath: 'app_storefront_base',
+    modulesPath: `${cwd}/cartridges/modules`,
+    apiPort: 8080,
+  },
+  cosmiconfigSync('sfcc-playground').search()?.config || {}
+);
 global.playgroundConfig = config;
 
 const setupAliases = require('./aliases');
-setupAliases(config.cartridgesDir, config.cartridgePath, config.modulesPath);
+setupAliases(
+  config.cartridgesDir,
+  config.cartridgePath,
+  config.modulesPath,
+  config.rootDir
+);
 
 const server = require('./server/Server');
 const Session = require('./server/Session');

@@ -2,14 +2,14 @@ const { existsSync } = require('fs');
 const moduleAlias = require('module-alias');
 
 require('dw-api-mock/demandware-globals');
-const { rootDir } = require('../sfcc-playground.config');
 
 /**
  * @param cartridgesDir {string}
  * @param cartridgePath {string}
  * @param modulesDir {string}
+ * @param rootDir {string}
  */
-function setupAliases(cartridgesDir, cartridgePath, modulesDir) {
+function setupAliases(cartridgesDir, cartridgePath, modulesDir, rootDir) {
   moduleAlias.addAlias('server', `${__dirname}/server`);
 
   moduleAlias.addAlias('*/cartridge', (fromTarget, request, alias) => {
