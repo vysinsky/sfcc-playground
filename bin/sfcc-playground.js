@@ -1,4 +1,11 @@
 #!/usr/bin/env node
-const { run } = require('../src/app');
+const arg = process.argv[2];
 
-run();
+if (arg === '-v' || arg === '--version') {
+  const { version } = require('../package.json');
+
+  process.stdout.write(version + '\n');
+  return;
+}
+
+require('../src/app').run();
