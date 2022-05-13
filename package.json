@@ -1,0 +1,51 @@
+{
+  "version": "0.0.0-development",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "bin": {
+    "sfcc-playground": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon -q src/index.js",
+    "lint": "prettier --check src",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "posttest": "npm run format",
+    "format": "prettier --loglevel warn --write src",
+    "semantic-release": "semantic-release",
+    "prepare": "husky install"
+  },
+  "name": "sfcc-playground",
+  "author": "Michal Vyšinský",
+  "module": "dist/sfcc-playground.esm.js",
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
+    "husky": "^8.0.1",
+    "lint-staged": ">=10",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2",
+    "semantic-release": "^19.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vysinsky/sfcc-playground.git"
+  },
+  "dependencies": {
+    "cosmiconfig": "^7.0.1",
+    "deepmerge": "^4.2.2",
+    "dw-api-mock": "git+https://github.com/SalesforceCommerceCloud/dw-api-mock.git",
+    "express": "^4.18.1",
+    "module-alias": "^2.2.2"
+  },
+  "lint-staged": {
+    "src/*": "prettier --write"
+  }
+}
