@@ -1,8 +1,7 @@
 {
   "version": "0.0.0-development",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "src/index.js",
   "bin": {
     "sfcc-playground": "bin/sfcc-playground.js"
   },
@@ -25,7 +24,8 @@
   },
   "name": "sfcc-playground",
   "author": "Michal Vyšinský",
-  "module": "dist/sfcc-playground.esm.js",
+  "description": "Salesforce Commerce Cloud Playground simulates SFCC server behaviour so you can develop controllers locally, use nice debug tools etc.",
+  "keywords": ["sfcc", "salesforce", "playground", "express", "developer experience"],
   "devDependencies": {
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
