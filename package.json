@@ -3,14 +3,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "bin": {
+    "sfcc-playground": "bin/sfcc-playground.js"
+  },
   "files": [
+    "bin",
     "src"
   ],
   "engines": {
     "node": ">=14"
-  },
-  "bin": {
-    "sfcc-playground": "src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
