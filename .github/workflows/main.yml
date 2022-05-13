@@ -1,0 +1,9 @@
+name: CI
+on: [push]
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint
+        run: echo "Hello"
