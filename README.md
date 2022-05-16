@@ -1,8 +1,14 @@
 # Salesforce Commerce Cloud Playground
 
+## Installation
+
+`npm install --global sfcc-playground@alpha`
+
+The playground uses [`dw-api-mock`](https://github.com/SalesforceCommerceCloud/dw-api-mock.git). You need to be able to access the repository ([see the Trailhead module](https://trailhead.salesforce.com/content/learn/modules/b2c-developer-resources-and-tools/b2c-developer-access-repositories)).
+
 ## Configuration
 
-The tool uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) so you can use:
+The playground uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) so you can use:
 
 - a `sfcc-playground` property in package.json
 - a `.sfcc-playgroundrc` file in JSON or YAML format
@@ -21,8 +27,20 @@ The tool uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) so you
 
 ## Usage
 
-The easies way to use the tool is to install package globally.
+The easies way to use the playground is to install package globally.
 
 ```shell
 npm install --global sfcc-playground@alpha
 ```
+
+Run the playground in your project folder (create a config file if needed).
+
+```shell
+sfcc-playground
+```
+
+Open browser on `http://localhost:8080` (or on the port you specified in the config).
+
+## Roadmap
+
+See [https://github.com/users/vysinsky/projects/1/views/1](https://github.com/users/vysinsky/projects/1/views/1)
