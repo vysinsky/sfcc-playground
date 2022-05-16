@@ -29,20 +29,30 @@ const Request = require('./server/Request');
 const Response = require('./server/Response');
 const { locateAllFilesInCartridges } = require('./utils');
 const controllersRegistry = require('./analyzer/ControllersRegistry');
+const actionsExtractor = require('./analyzer/ActionsExtractor');
 const Module = require('module');
 
 const app = express();
 
-app.get('/controllers', (req, res, next) => {
+app.get('/routes', (req, res, next) => {
   controllersRegistry.registerAllControllers(config.cartridgePath);
+  const controllers = controllersRegistry.controllers;
 
-  res.send({
-    controllers: controllersRegistry.controllers,
+  const routes = [];
+
+  Object.entries(controllers).forEach(([controllerName, { filePath }]) => {
+    server.clearRoutes();
+    routes.push({
+      name: controllerName,
+      actions: actionsExtractor.extractControllerActions(filePath),
+    });
   });
+
+  res.send({ routes });
   next();
 });
 
-app.all('/route/:route', (req, res, next) => {
+app.all('/routes/:route', (req, res, next) => {
   server.clearRoutes();
   const [controllerName, action] = req.params.route.split('-');
 

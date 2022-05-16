@@ -5,6 +5,10 @@ class Request {
     return this.expressRequest.query;
   }
 
+  get querystring() {
+    return this.expressRequest.query;
+  }
+
   get httpMethod() {
     return this.expressRequest.method;
   }
