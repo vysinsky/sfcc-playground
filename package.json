@@ -25,7 +25,13 @@
   "name": "sfcc-playground",
   "author": "Michal Vyšinský",
   "description": "Salesforce Commerce Cloud Playground simulates SFCC server behaviour so you can develop controllers locally, use nice debug tools etc.",
-  "keywords": ["sfcc", "salesforce", "playground", "express", "developer experience"],
+  "keywords": [
+    "sfcc",
+    "salesforce",
+    "playground",
+    "express",
+    "developer experience"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
