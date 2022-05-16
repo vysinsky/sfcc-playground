@@ -1,5 +1,7 @@
 const { inspect } = require('util');
 const dm = require('deepmerge');
+const { locateSingleFileInCartridges } = require('../utils');
+const { readFileSync } = require('cosmiconfig/dist/readFile');
 
 class Response {
   cachePeriod;
@@ -45,10 +47,16 @@ class Response {
     this._applyViewData(data);
     this.view = name;
 
+    const templatePath = locateSingleFileInCartridges(
+      `templates/default/${name}.isml`
+    );
+
     this._appendRenderings({
       type: 'render',
       subType: 'isml',
       view: name,
+      templatePath,
+      templateSource: templatePath ? readFileSync(templatePath) : undefined,
     });
   }
 
