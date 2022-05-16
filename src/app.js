@@ -61,28 +61,28 @@ app.all('/routes/:route', (req, res, next) => {
   global.response = new Response();
 
   let actionFn;
+  let controllerFound = false;
 
   locateAllFilesInCartridges(`controllers/${controllerName}`)
     .reverse()
     .forEach((controllerFilePath) => {
       const controller = require(controllerFilePath);
       Module.prototype.superModule = controller;
-
-      if (!controller[action]) {
-        global.response.log(
-          'Controller action',
-          action,
-          'not found in the controller',
-          controllerName
-        );
-        global.response.setStatusCode(404);
-      } else {
-        actionFn = controller[action];
-      }
+      controllerFound = true;
+      actionFn = controller[action];
     });
 
   if (typeof actionFn !== 'function') {
-    global.response.log('Controller', controllerName, 'not found');
+    if (!controllerFound) {
+      global.response.log('Controller', controllerName, 'not found');
+    } else {
+      global.response.log(
+        'Controller action',
+        action,
+        'not found in the controller',
+        controllerName
+      );
+    }
     global.response.setStatusCode(404);
   } else {
     actionFn();
