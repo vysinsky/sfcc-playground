@@ -18,6 +18,9 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Test
+        run: yarn test
   release:
     name: Release
     runs-on: ubuntu-latest

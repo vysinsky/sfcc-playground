@@ -56,7 +56,7 @@ class Server {
 
   replace(name, ...middlewares) {
     if (!this.routes[name]) {
-      throw new Error('Route with this name does not exist');
+      throw new Error(`Route with this name (${name}) does not exist`);
     }
 
     delete this.routes[name];

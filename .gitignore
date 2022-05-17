@@ -1,6 +1,7 @@
 *.log
 .DS_Store
-node_modules
+coverage
 dist
+node_modules
 sfcc-playground.config.js
 sfra

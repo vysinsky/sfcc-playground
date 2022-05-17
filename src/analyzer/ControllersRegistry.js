@@ -22,10 +22,14 @@ class ControllersRegistry {
   }
 
   registerController(cartridge, controller, filePath) {
-    this.controllers[controller] = {
-      cartridge,
-      filePath,
-    };
+    if (this.controllers[controller]) {
+      this.controllers[controller].cartridges.push(cartridge);
+    } else {
+      this.controllers[controller] = {
+        cartridges: [cartridge],
+        filePath,
+      };
+    }
   }
 }
 
