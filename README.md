@@ -1,5 +1,14 @@
 # Salesforce Commerce Cloud Playground
 
+## API
+
+![json-response-route.png](json-response-route.png)
+![json-response-routes.png](json-response-routes.png)
+
+## Dashboard
+
+Coming in the future
+
 ## Installation
 
 `npm install --global sfcc-playground@alpha`
