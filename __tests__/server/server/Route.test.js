@@ -1,6 +1,6 @@
-const Route = require('../../src/server/Route');
-const Request = require('../../src/server/Request');
-const Response = require('../../src/server/Response');
+const Route = require('../../../server/src/server/Route');
+const Request = require('../../../server/src/server/Request');
+const Response = require('../../../server/src/server/Response');
 
 describe('Route', () => {
   test('getRoute', () => {

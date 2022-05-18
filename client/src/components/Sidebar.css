@@ -1,0 +1,106 @@
+.app-sidebar {
+  display: flex;
+  flex: 0 0 280px;
+  margin-top: -60px;
+  min-width: 280px;
+  overflow: hidden;
+  padding-top: 60px;
+  width: 280px;
+  z-index: 11;
+  background: #fff;
+}
+
+.fixed-sidebar .app-sidebar {
+  height: 100vh;
+  position: fixed;
+}
+
+.app-sidebar.sidebar-shadow {
+  box-shadow: 7px 0 60px rgb(0 0 0 / 5%);
+}
+
+.app-sidebar .app-sidebar__inner {
+  padding: 10px 1.5rem 1.5rem;
+  overflow-y: auto;
+}
+
+.vertical-nav-menu {
+  position: relative;
+}
+
+.vertical-nav-menu .metismenu-container {
+  list-style: none;
+}
+
+.vertical-nav-menu .metismenu-container .metismenu-container.mm-show:before {
+  background: #e0f3ff;
+  border-radius: 15px;
+  content: '';
+  height: 100%;
+  left: 20px;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  width: 3px;
+}
+
+.vertical-nav-menu
+  .metismenu-container
+  .metismenu-link.has-arrow[aria-expanded='true'] {
+  font-weight: 700;
+}
+
+.vertical-nav-menu
+  .metismenu-container
+  .metismenu-container.mm-show
+  > .metismenu-item
+  > .metismenu-link {
+  color: #6c757d;
+  height: 2.3em;
+  line-height: 2.3em;
+  margin: 0 0 3px;
+}
+
+.vertical-nav-menu .metismenu-container .metismenu-link {
+  border-radius: 0.25rem;
+  color: #343a40;
+  display: block;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  padding: 0 1.5rem 0 45px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.vertical-nav-menu
+  .metismenu-container
+  .metismenu-container
+  .metismenu-item
+  > .metismenu-link {
+  height: 0;
+  overflow: hidden;
+}
+
+.vertical-nav-menu .metismenu-container .metismenu-container .metismenu-link {
+  padding-left: 4em;
+}
+
+.vertical-nav-menu .metismenu-container,
+.vertical-nav-menu .metismenu-item {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.vertical-nav-menu .metismenu-container .metismenu-link {
+  border-radius: 0.25rem;
+  color: #343a40;
+  display: block;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  padding: 0 1.5rem 0 20px;
+  position: relative;
+  transition: transform 0.1s, height 0.1s, color 0.1s, background-color 0.1s,
+    -webkit-transform 0.1s;
+  white-space: nowrap;
+}

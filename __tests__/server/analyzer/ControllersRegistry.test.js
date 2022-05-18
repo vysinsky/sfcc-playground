@@ -1,4 +1,4 @@
-const controllersRegistry = require('../../src/analyzer/ControllersRegistry');
+const controllersRegistry = require('../../../server/src/analyzer/ControllersRegistry');
 
 jest.mock('fs');
 

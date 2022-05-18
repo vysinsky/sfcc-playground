@@ -1,4 +1,4 @@
-const server = require('../../src/server/Server');
+const server = require('../../../server/src/server/Server');
 
 describe('Server', () => {
   beforeEach(() => {

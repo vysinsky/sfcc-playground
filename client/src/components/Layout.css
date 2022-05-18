@@ -1,0 +1,31 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #f1f4f6;
+}
+
+.fixed-header .app-main {
+  padding-top: 60px;
+}
+
+.app-main {
+  display: flex;
+  position: relative;
+  z-index: 8;
+}
+
+.fixed-sidebar .app-main .app-main__outer {
+  padding-left: 280px;
+  z-index: 9;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+}
+
+.app-main .app-main__inner {
+  flex: 1 1;
+  padding: 1.5rem 1.5rem 0;
+}
