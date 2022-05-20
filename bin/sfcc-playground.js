@@ -8,4 +8,4 @@ if (arg === '-v' || arg === '--version') {
   return;
 }
 
-require('../src/app').run();
+require('../server/src/app').run();

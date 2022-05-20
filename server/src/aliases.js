@@ -65,12 +65,12 @@ function setupAliases(cartridgesDir, cartridgePath, modulesDir, rootDir) {
 
     const requestedModule = request.replace(
       'dw',
-      realpathSync(`${__dirname}/../node_modules/dw-api-mock/dw`)
+      realpathSync(`${__dirname}/../../node_modules/dw-api-mock/dw`)
     );
 
     if (existsSync(requestedModule) || existsSync(`${requestedModule}.js`)) {
       console.log('FOUND in dw-api-mock');
-      return `${__dirname}/../node_modules/dw-api-mock/dw`;
+      return `${__dirname}/../../node_modules/dw-api-mock/dw`;
     }
   });
 }

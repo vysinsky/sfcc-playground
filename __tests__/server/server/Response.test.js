@@ -1,4 +1,4 @@
-const Response = require('../../src/server/Response');
+const Response = require('../../../server/src/server/Response');
 
 describe('Response', () => {
   test('toJson with no calls on response', () => {

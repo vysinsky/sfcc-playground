@@ -1,4 +1,4 @@
-const Request = require('../../src/server/Request');
+const Request = require('../../../server/src/server/Request');
 
 describe('Request', () => {
   const EXPRESS_REQUEST = {

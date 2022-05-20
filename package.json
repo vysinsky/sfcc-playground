@@ -7,21 +7,26 @@
   },
   "files": [
     "bin",
-    "src"
+    "server/src",
+    "client/build"
   ],
   "engines": {
     "node": ">=14"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon -q src/index.js",
-    "lint": "prettier --check src",
+    "start": "node server/src/index.js",
+    "dev": "concurrently yarn:dev:*",
+    "dev:api": "nodemon -q server/src/index.js",
+    "dev:ui": "cd client; yarn start; cd ..",
+    "build:ui": "cd client; yarn build; cd ..",
+    "lint": "prettier --check bin server client __tests__ __mocks__ types",
     "test": "jest",
     "test:watch": "jest --watch",
     "posttest": "npm run format",
-    "format": "prettier --loglevel warn --write src",
+    "format": "prettier --loglevel warn --write bin server client __tests__ __mocks__ types",
     "semantic-release": "semantic-release",
-    "prepare": "husky install"
+    "prepare": "husky install; yarn install-deps",
+    "install-deps": "cd client; yarn --frozen-lockfile; cd .."
   },
   "name": "sfcc-playground",
   "author": "Michal Vyšinský",
@@ -36,6 +41,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
+    "concurrently": "^7.2.0",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
     "lint-staged": ">=10",
@@ -55,6 +61,6 @@
     "module-alias": "^2.2.2"
   },
   "lint-staged": {
-    "src/*": "prettier --write"
+    "*.{js,ts,jsx,tsx,json,md}": "yarn format"
   }
 }

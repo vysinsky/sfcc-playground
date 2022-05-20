@@ -1,3 +1,5 @@
+const path = require('path');
+const { existsSync } = require('fs');
 const express = require('express');
 const dm = require('deepmerge');
 const { cosmiconfigSync } = require('cosmiconfig');
@@ -34,7 +36,9 @@ const Module = require('module');
 
 const app = express();
 
-app.get('/routes', (req, res, next) => {
+app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
+
+app.get('/api/routes', (req, res, next) => {
   controllersRegistry.registerAllControllers(config.cartridgePath);
   const controllers = controllersRegistry.controllers;
 
@@ -52,7 +56,7 @@ app.get('/routes', (req, res, next) => {
   next();
 });
 
-app.all('/routes/:route', (req, res, next) => {
+app.all('/api/routes/:route', (req, res, next) => {
   server.clearRoutes();
   const [controllerName, action] = req.params.route.split('-');
 
@@ -90,6 +94,27 @@ app.all('/routes/:route', (req, res, next) => {
 
   res.send(global.response.toJson());
   next();
+});
+
+app.get('/*', (req, res) => {
+  const indexPath = path.join(
+    __dirname,
+    '..',
+    '..',
+    'client',
+    'build',
+    'index.html'
+  );
+  if (!existsSync(indexPath)) {
+    res
+      .status(404)
+      .send(
+        'Cannot start UI. Client build folder is missing. Did you run `yarn build` in `client` folder?'
+      );
+    return;
+  }
+
+  res.sendFile(indexPath);
 });
 
 module.exports = {
