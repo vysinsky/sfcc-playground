@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Alert,
@@ -13,9 +13,11 @@ import {
 import { API_BASE_URL } from '../consts';
 import { RouteCallError, RouteCallResult } from '../../types/types';
 import RouteCallResultRenderer from '../components/RouteCallResultRenderer';
+import { PlaygroundContext } from '../components/PlaygroundContext';
 
 export function RoutePage() {
   const params = useParams();
+  const { simulateHttps } = useContext(PlaygroundContext);
   const route = params.route as string;
   const [loading, setLoading] = useState(false);
   const [routeCallError, setRouteCallError] = useState<{
@@ -29,7 +31,11 @@ export function RoutePage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/routes/${route}`);
+      const response = await fetch(
+        `${API_BASE_URL}/routes/${route}?${new URLSearchParams({
+          simulateHttps: simulateHttps ? 'true' : 'false',
+        })}`
+      );
 
       if (response.ok) {
         setRouteCallResult({
@@ -51,7 +57,7 @@ export function RoutePage() {
     }
 
     setLoading(false);
-  }, [route, routeCallResult, routeCallError]);
+  }, [route, routeCallResult, routeCallError, simulateHttps]);
 
   return (
     <Container>
@@ -60,7 +66,7 @@ export function RoutePage() {
           <Container>
             <Row>
               <Col className="pt-2">
-                <h4>http://localhost:8080/route/{route}</h4>
+                <h4>/api/routes/{route}</h4>
               </Col>
               <Col xs={3} className="d-flex pt-1 justify-content-end">
                 <Button

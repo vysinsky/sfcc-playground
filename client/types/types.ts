@@ -3,6 +3,9 @@ import { Rendering } from '../../types/shared';
 export type PlaygroundContextType = {
   loaded: boolean;
   routes: Route[];
+  simulateHttps: boolean;
+  enableHttpsSimulation: () => void;
+  disableHttpsSimulation: () => void;
 };
 
 export type Route = {

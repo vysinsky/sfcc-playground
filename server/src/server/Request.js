@@ -9,6 +9,10 @@ class Request {
     return this.expressRequest.query;
   }
 
+  get https() {
+    return this.expressRequest.query.simulateHttps === 'true';
+  }
+
   get httpMethod() {
     return this.expressRequest.method;
   }
