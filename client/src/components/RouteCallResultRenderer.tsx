@@ -1,15 +1,37 @@
 import React from 'react';
-import { Accordion, Alert } from 'react-bootstrap';
+import { Accordion, Alert, Badge } from 'react-bootstrap';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/monikai.css';
 
-import { RouteCallResult } from '../../types/types';
+import { RouteCallError, RouteCallResult } from '../../types/types';
 
 interface Props {
-  result: RouteCallResult;
+  result: RouteCallResult | RouteCallError | 'loading';
 }
 
 function RouteCallResultRenderer({ result }: Props) {
+  if (result === 'loading') {
+    return null;
+  }
+
+  if (result.isError) {
+    const routeCallError = result as RouteCallError;
+    return (
+      <Alert className="mt-2" variant="danger">
+        <Badge bg="danger">{routeCallError.status}</Badge> Error calling the
+        route.
+        {typeof routeCallError.response !== 'undefined' && (
+          <div
+            className="p-2"
+            dangerouslySetInnerHTML={{
+              __html: routeCallError.response,
+            }}
+          ></div>
+        )}
+      </Alert>
+    );
+  }
+
   return (
     <Accordion defaultActiveKey="basics">
       <Accordion.Item eventKey="basics">

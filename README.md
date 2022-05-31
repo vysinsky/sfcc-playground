@@ -1,12 +1,6 @@
 # Salesforce Commerce Cloud Playground
 
-## UI
-
 ![playground-ui.png](playground-ui.png)
-
-## API
-
-![json-response-route.png](json-response-route.png) ![json-response-routes.png](json-response-routes.png)
 
 ## Installation
 
