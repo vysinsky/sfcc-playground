@@ -1,11 +1,25 @@
 import { Rendering } from '../../types/shared';
+import React from 'react';
+
+export type SelectedRoutes = {
+  [key: string]: { route: string; action: string };
+};
+
+export type RouteCallResults = {
+  [key: string]: RouteCallResult | RouteCallError | 'loading';
+};
 
 export type PlaygroundContextType = {
   loaded: boolean;
   routes: Route[];
+  selectedRoutes: SelectedRoutes;
   simulateHttps: boolean;
   enableHttpsSimulation: () => void;
   disableHttpsSimulation: () => void;
+  setSelectedRoutes: React.Dispatch<React.SetStateAction<SelectedRoutes>>;
+  executeRoute: (route: string) => Promise<void>;
+  routeCallStatus: RouteCallResults;
+  setRouteCallStatus: React.Dispatch<React.SetStateAction<RouteCallResults>>;
 };
 
 export type Route = {
@@ -14,12 +28,14 @@ export type Route = {
 };
 
 export type RouteCallError = {
+  isError: true;
   status: number;
   statusText: string;
   response?: string;
 };
 
 export type RouteCallResult = {
+  isError: false;
   cachePeriod: number | undefined;
   cachePeriodUnit: string | undefined;
   isJson: boolean;

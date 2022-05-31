@@ -12,13 +12,12 @@
 }
 
 .app-main {
-  display: flex;
   position: relative;
   z-index: 8;
 }
 
 .fixed-sidebar .app-main .app-main__outer {
-  padding-left: 280px;
+  padding-left: 320px;
   z-index: 9;
   display: flex;
   flex: 1 1;
