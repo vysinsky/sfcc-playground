@@ -28,7 +28,7 @@ class Response {
 
   view;
 
-  viewData;
+  viewData = {};
 
   events = [];
 

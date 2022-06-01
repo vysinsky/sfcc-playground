@@ -20,7 +20,53 @@ class Request {
   get pageMetaData() {
     return {
       pageMetaTags: [],
+      addPageMetaTags() {},
     };
+  }
+
+  get locale() {
+    return {
+      id: 'en_US',
+    };
+  }
+
+  get currentCustomer() {
+    return {
+      profile: {
+        email: 'abc@test.com',
+      },
+      addressBook: {
+        addresses: [],
+        preferredAddress: {
+          address1: '5 Wall St.',
+        },
+      },
+      raw: {
+        getOrderHistory: function () {
+          return {
+            getOrders: function () {
+              return {
+                first: function () {
+                  return null;
+                },
+              };
+            },
+          };
+        },
+      },
+    };
+  }
+
+  get form() {
+    return {};
+  }
+
+  get includeRequest() {
+    return true;
+  }
+
+  get geolocation() {
+    return {};
   }
 
   constructor(expressRequest, customer, session) {

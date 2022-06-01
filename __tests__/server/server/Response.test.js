@@ -19,7 +19,7 @@ describe('Response', () => {
         "renderings": Array [],
         "statusCode": undefined,
         "view": undefined,
-        "viewData": undefined,
+        "viewData": Object {},
       }
     `);
   });
