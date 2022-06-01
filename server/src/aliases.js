@@ -72,6 +72,8 @@ function setupAliases(cartridgesDir, cartridgePath, modulesDir, rootDir) {
       console.log('FOUND in dw-api-mock');
       return `${__dirname}/../../node_modules/dw-api-mock/dw`;
     }
+
+    throw new Error(`Alias cannot be found (${request} from ${fromTarget})`);
   });
 }
 
