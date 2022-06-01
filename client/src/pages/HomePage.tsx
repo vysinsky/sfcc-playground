@@ -8,6 +8,7 @@ import {
   Container,
   FloatingLabel,
   Form,
+  ProgressBar,
   Row,
 } from 'react-bootstrap';
 
@@ -89,7 +90,9 @@ export function HomePage() {
       {Object.keys(routeCallStatus).length > 0 && (
         <Container className="mb-4">
           <Card>
-            <Card.Header>Execution summary (click to filter)</Card.Header>
+            <Card.Header>
+              Execution summary (click label or progressbar to filter)
+            </Card.Header>
             <Card.Body>
               <Row>
                 <Col>
@@ -146,6 +149,46 @@ export function HomePage() {
                 </Col>
               </Row>
             </Card.Body>
+            {Object.keys(routeCallStatus).length > 0 && (
+              <Card.Footer>
+                <ProgressBar>
+                  <ProgressBar
+                    striped={routeFilterState === 'successful'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setRouteFilterState('successful');
+                    }}
+                    variant="success"
+                    max={Object.keys(selectedRoutes).length}
+                    now={
+                      Object.values(routeCallStatus).filter(
+                        (status) =>
+                          status !== 'loading' &&
+                          !status.hasOwnProperty('isError')
+                      ).length
+                    }
+                    key={1}
+                  />
+                  <ProgressBar
+                    striped={routeFilterState === 'failed'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setRouteFilterState('failed');
+                    }}
+                    variant="danger"
+                    max={Object.keys(selectedRoutes).length}
+                    now={
+                      Object.values(routeCallStatus).filter(
+                        (status) =>
+                          status !== 'loading' &&
+                          status.hasOwnProperty('isError')
+                      ).length
+                    }
+                    key={2}
+                  />
+                </ProgressBar>
+              </Card.Footer>
+            )}
           </Card>
         </Container>
       )}
