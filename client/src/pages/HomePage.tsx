@@ -32,6 +32,9 @@ export function HomePage() {
     routes,
   } = useContext(PlaygroundContext);
   const [routeFilterTerm, setRouteFilterTerm] = useState<string>('');
+  const [routeFilterState, setRouteFilterState] = useState<
+    'all' | 'successful' | 'failed'
+  >('all');
 
   const executeAllRoutes = useCallback(async () => {
     for (const route of Object.keys(selectedRoutes)) {
@@ -86,25 +89,60 @@ export function HomePage() {
       {Object.keys(routeCallStatus).length > 0 && (
         <Container className="mb-4">
           <Card>
-            <Card.Header>Execution summary</Card.Header>
+            <Card.Header>Execution summary (click to filter)</Card.Header>
             <Card.Body>
               <Row>
-                <Col>Routes called: {Object.keys(routeCallStatus).length}</Col>
-                <Col className="text-success">
-                  Successful calls:{' '}
-                  {
-                    Object.values(routeCallStatus).filter(
-                      (s) => !s.hasOwnProperty('isError')
-                    ).length
-                  }
+                <Col>
+                  <a
+                    className={`text-body${
+                      routeFilterState === 'all' ? ' fw-bold' : ''
+                    }`}
+                    href="#all-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('all');
+                    }}
+                  >
+                    Routes called: {Object.keys(routeCallStatus).length}
+                  </a>
                 </Col>
-                <Col className="text-danger">
-                  Failed calls:{' '}
-                  {
-                    Object.values(routeCallStatus).filter((s) =>
-                      s.hasOwnProperty('isError')
-                    ).length
-                  }
+                <Col>
+                  <a
+                    className={`text-success${
+                      routeFilterState === 'successful' ? ' fw-bold' : ''
+                    }`}
+                    href="#successful-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('successful');
+                    }}
+                  >
+                    Successful calls:{' '}
+                    {
+                      Object.values(routeCallStatus).filter(
+                        (s) => !s.hasOwnProperty('isError')
+                      ).length
+                    }
+                  </a>
+                </Col>
+                <Col>
+                  <a
+                    className={`text-danger${
+                      routeFilterState === 'failed' ? ' fw-bold' : ''
+                    }`}
+                    href="#failed-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('failed');
+                    }}
+                  >
+                    Failed calls:{' '}
+                    {
+                      Object.values(routeCallStatus).filter((s) =>
+                        s.hasOwnProperty('isError')
+                      ).length
+                    }
+                  </a>
                 </Col>
               </Row>
             </Card.Body>
@@ -113,14 +151,29 @@ export function HomePage() {
       )}
       {Object.keys(selectedRoutes)
         .filter((r) => r.match(routeFilterTerm))
+        .filter((r) => {
+          const result = routeCallStatus[r];
+
+          if (!result || result === 'loading') {
+            return true;
+          }
+
+          if (routeFilterState === 'successful') {
+            return !result.hasOwnProperty('isError');
+          }
+
+          if (routeFilterState === 'failed') {
+            return result.hasOwnProperty('isError');
+          }
+
+          return true;
+        })
         .map((route) => {
           const [controller, action] = route.split('-');
 
           const metadata = routes.find((r) => r.name === controller)!.metadata[
             action
           ];
-
-          console.log(route, metadata);
 
           return { route, metadata };
         })
