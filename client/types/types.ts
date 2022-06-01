@@ -25,6 +25,7 @@ export type PlaygroundContextType = {
 export type Route = {
   name: string;
   actions: string[];
+  metadata: { [key: string]: { method: 'GET' | 'POST' } };
 };
 
 export type RouteCallError = {

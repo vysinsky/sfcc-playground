@@ -49,6 +49,7 @@ app.get('/api/routes', (req, res, next) => {
     routes.push({
       name: controllerName,
       actions: actionsExtractor.extractControllerActions(filePath),
+      metadata: server.routesMetadata,
     });
   });
 

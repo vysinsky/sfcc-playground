@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import {
+  Badge,
   Button,
   ButtonGroup,
   Card,
@@ -13,9 +14,23 @@ import {
 import RouteCallResultRenderer from '../components/RouteCallResultRenderer';
 import { PlaygroundContext } from '../components/PlaygroundContext';
 
+function getBadgeBg(method: 'GET' | 'POST') {
+  switch (method) {
+    case 'GET':
+      return 'primary';
+    case 'POST':
+      return 'info';
+  }
+}
+
 export function HomePage() {
-  const { executeRoute, routeCallStatus, setRouteCallStatus, selectedRoutes } =
-    useContext(PlaygroundContext);
+  const {
+    executeRoute,
+    routeCallStatus,
+    setRouteCallStatus,
+    selectedRoutes,
+    routes,
+  } = useContext(PlaygroundContext);
   const [routeFilterTerm, setRouteFilterTerm] = useState<string>('');
 
   const executeAllRoutes = useCallback(async () => {
@@ -98,11 +113,29 @@ export function HomePage() {
       )}
       {Object.keys(selectedRoutes)
         .filter((r) => r.match(routeFilterTerm))
-        .map((route) => (
+        .map((route) => {
+          const [controller, action] = route.split('-');
+
+          const metadata = routes.find((r) => r.name === controller)!.metadata[
+            action
+          ];
+
+          console.log(route, metadata);
+
+          return { route, metadata };
+        })
+        .map(({ route, metadata }) => (
           <Container key={route} className="mb-2">
             <Card>
               <Card.Header className="d-flex justify-content-between align-items-center">
-                Route: {route}
+                <div className="d-flex">
+                  <div style={{ width: 50 }}>
+                    <Badge bg={getBadgeBg(metadata.method)}>
+                      {metadata.method}
+                    </Badge>
+                  </div>{' '}
+                  /{route}
+                </div>
                 <Button
                   variant="primary"
                   size="sm"
