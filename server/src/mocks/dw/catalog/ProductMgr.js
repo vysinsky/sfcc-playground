@@ -1,7 +1,7 @@
 var ProductMgr = function () {};
 
 ProductMgr.getProduct = function () {
-  return new require('dw/catalog/Product');
+  return new (require('dw/catalog/Product'))();
 };
 
 ProductMgr.queryAllSiteProducts = function () {};

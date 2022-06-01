@@ -1,5 +1,4 @@
 var _super = require('dw/object/ExtensibleObject');
-const ProductOptionModel = require('dw/catalog/ProductOptionModel');
 
 var Product = function () {};
 
@@ -131,7 +130,7 @@ Product.prototype.searchableFlag = null;
 Product.prototype.EAN = null;
 Product.prototype.UPC = null;
 Product.prototype.brand = null;
-Product.optionModel = new ProductOptionModel();
+Product.optionModel = new (require('dw/catalog/ProductOptionModel'))();
 Product.prototype.bundledProductQuantity = null;
 Product.prototype.bundledProducts = null;
 Product.prototype.bundles = null;
@@ -152,7 +151,8 @@ Product.prototype.allIncomingProductLinks = null;
 Product.prototype.attributeModel = null;
 Product.prototype.images = null;
 Product.prototype.orderableRecommendations = null;
-Product.prototype.availabilityModel = null;
+Product.prototype.availabilityModel =
+  new (require('dw/catalog/ProductAvailabilityModel'))();
 Product.prototype.allRecommendations = null;
 Product.prototype.activeData = null;
 

@@ -46,19 +46,43 @@ function getCurrentBasket() {
     totalGrossPrice: {
       value: 250.0,
     },
-    getBonusDiscountLineItems: function () {
-      return new ArrayList([
-        {
-          UUID: 'someUUID',
-          getBonusProductPrice: function () {
-            return {
-              toFormattedString: function () {
-                return 'someFormattedString';
-              },
-            };
-          },
+    productLineItems: new ArrayList(),
+    shipments: new ArrayList(),
+    allLineItems: new ArrayList(),
+    couponLineItems: new ArrayList(),
+    priceAdjustments: new ArrayList(),
+    allShippingPriceAdjustments: new ArrayList(),
+    bonusDiscountLineItems: new ArrayList([
+      {
+        UUID: 'someUUID',
+        getBonusProductPrice: function () {
+          return {
+            toFormattedString: function () {
+              return 'someFormattedString';
+            },
+          };
         },
-      ]);
+      },
+    ]),
+    getBonusDiscountLineItems: function () {
+      return this.bonusDiscountLineItems;
+    },
+    getShipments() {
+      return this.shipments;
+    },
+    updateCurrency() {},
+    getAdjustedMerchandizeTotalPrice() {
+      return {
+        available: true,
+        subtract() {
+          return { value: 0 };
+        },
+      };
+    },
+    shippingTotalPrice: {
+      subtract() {
+        return { value: 0 };
+      },
     },
   };
 }

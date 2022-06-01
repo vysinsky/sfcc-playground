@@ -1,5 +1,6 @@
 var CustomerMgr = function () {};
 
+const Customer = require('dw/customer/Customer');
 const CustomerList = require('dw/customer/CustomerList');
 const customerList = new CustomerList();
 
@@ -16,7 +17,9 @@ CustomerMgr.getCustomerGroup = function () {};
 CustomerMgr.createExternallyAuthenticatedCustomer = function () {};
 CustomerMgr.getExternallyAuthenticatedCustomerProfile = function () {};
 CustomerMgr.loginExternallyAuthenticatedCustomer = function () {};
-CustomerMgr.getCustomerByCustomerNumber = function () {};
+CustomerMgr.getCustomerByCustomerNumber = function () {
+  return new Customer();
+};
 CustomerMgr.createCustomer = function () {};
 CustomerMgr.getSiteCustomerList = () => customerList;
 CustomerMgr.authenticateCustomer = function () {
@@ -26,6 +29,9 @@ CustomerMgr.loginCustomer = function () {
   return { authenticatedCustomer: {} };
 };
 CustomerMgr.getCustomerByToken = function () {};
+CustomerMgr.isAcceptablePassword = function () {
+  return true;
+};
 CustomerMgr.prototype.customerGroups = null;
 CustomerMgr.prototype.profile = null;
 CustomerMgr.prototype.registeredCustomerCount = null;
