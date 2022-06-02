@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import {
+  Badge,
   Button,
   ButtonGroup,
   Card,
@@ -7,16 +8,34 @@ import {
   Container,
   FloatingLabel,
   Form,
+  ProgressBar,
   Row,
 } from 'react-bootstrap';
 
 import RouteCallResultRenderer from '../components/RouteCallResultRenderer';
 import { PlaygroundContext } from '../components/PlaygroundContext';
 
+function getBadgeBg(method: 'GET' | 'POST') {
+  switch (method) {
+    case 'GET':
+      return 'primary';
+    case 'POST':
+      return 'info';
+  }
+}
+
 export function HomePage() {
-  const { executeRoute, routeCallStatus, setRouteCallStatus, selectedRoutes } =
-    useContext(PlaygroundContext);
+  const {
+    executeRoute,
+    routeCallStatus,
+    setRouteCallStatus,
+    selectedRoutes,
+    routes,
+  } = useContext(PlaygroundContext);
   const [routeFilterTerm, setRouteFilterTerm] = useState<string>('');
+  const [routeFilterState, setRouteFilterState] = useState<
+    'all' | 'successful' | 'failed'
+  >('all');
 
   const executeAllRoutes = useCallback(async () => {
     for (const route of Object.keys(selectedRoutes)) {
@@ -71,38 +90,148 @@ export function HomePage() {
       {Object.keys(routeCallStatus).length > 0 && (
         <Container className="mb-4">
           <Card>
-            <Card.Header>Execution summary</Card.Header>
+            <Card.Header>
+              Execution summary (click label or progressbar to filter)
+            </Card.Header>
             <Card.Body>
               <Row>
-                <Col>Routes called: {Object.keys(routeCallStatus).length}</Col>
-                <Col className="text-success">
-                  Successful calls:{' '}
-                  {
-                    Object.values(routeCallStatus).filter(
-                      (s) => !s.hasOwnProperty('isError')
-                    ).length
-                  }
+                <Col>
+                  <a
+                    className={`text-body${
+                      routeFilterState === 'all' ? ' fw-bold' : ''
+                    }`}
+                    href="#all-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('all');
+                    }}
+                  >
+                    Routes called: {Object.keys(routeCallStatus).length}
+                  </a>
                 </Col>
-                <Col className="text-danger">
-                  Failed calls:{' '}
-                  {
-                    Object.values(routeCallStatus).filter((s) =>
-                      s.hasOwnProperty('isError')
-                    ).length
-                  }
+                <Col>
+                  <a
+                    className={`text-success${
+                      routeFilterState === 'successful' ? ' fw-bold' : ''
+                    }`}
+                    href="#successful-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('successful');
+                    }}
+                  >
+                    Successful calls:{' '}
+                    {
+                      Object.values(routeCallStatus).filter(
+                        (s) => !s.hasOwnProperty('isError')
+                      ).length
+                    }
+                  </a>
+                </Col>
+                <Col>
+                  <a
+                    className={`text-danger${
+                      routeFilterState === 'failed' ? ' fw-bold' : ''
+                    }`}
+                    href="#failed-calls"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRouteFilterState('failed');
+                    }}
+                  >
+                    Failed calls:{' '}
+                    {
+                      Object.values(routeCallStatus).filter((s) =>
+                        s.hasOwnProperty('isError')
+                      ).length
+                    }
+                  </a>
                 </Col>
               </Row>
             </Card.Body>
+            {Object.keys(routeCallStatus).length > 0 && (
+              <Card.Footer>
+                <ProgressBar>
+                  <ProgressBar
+                    striped={routeFilterState === 'successful'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setRouteFilterState('successful');
+                    }}
+                    variant="success"
+                    max={Object.keys(selectedRoutes).length}
+                    now={
+                      Object.values(routeCallStatus).filter(
+                        (status) =>
+                          status !== 'loading' &&
+                          !status.hasOwnProperty('isError')
+                      ).length
+                    }
+                    key={1}
+                  />
+                  <ProgressBar
+                    striped={routeFilterState === 'failed'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setRouteFilterState('failed');
+                    }}
+                    variant="danger"
+                    max={Object.keys(selectedRoutes).length}
+                    now={
+                      Object.values(routeCallStatus).filter(
+                        (status) =>
+                          status !== 'loading' &&
+                          status.hasOwnProperty('isError')
+                      ).length
+                    }
+                    key={2}
+                  />
+                </ProgressBar>
+              </Card.Footer>
+            )}
           </Card>
         </Container>
       )}
       {Object.keys(selectedRoutes)
         .filter((r) => r.match(routeFilterTerm))
-        .map((route) => (
+        .filter((r) => {
+          const result = routeCallStatus[r];
+
+          if (!result || result === 'loading') {
+            return true;
+          }
+
+          if (routeFilterState === 'successful') {
+            return !result.hasOwnProperty('isError');
+          }
+
+          if (routeFilterState === 'failed') {
+            return result.hasOwnProperty('isError');
+          }
+
+          return true;
+        })
+        .map((route) => {
+          const [controller, action] = route.split('-');
+
+          const metadata = routes.find((r) => r.name === controller)!.metadata[
+            action
+          ];
+
+          return { route, metadata };
+        })
+        .map(({ route, metadata }) => (
           <Container key={route} className="mb-2">
             <Card>
               <Card.Header className="d-flex justify-content-between align-items-center">
-                Route: {route}
+                <div className="d-flex">
+                  <div style={{ width: 50 }}>
+                    <Badge bg={getBadgeBg(metadata.method)}>
+                      {metadata.method}
+                    </Badge>
+                  </div>{' '}
+                  /{route}
+                </div>
                 <Button
                   variant="primary"
                   size="sm"

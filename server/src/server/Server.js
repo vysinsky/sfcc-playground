@@ -4,19 +4,26 @@ const Route = require('./Route');
 class Server {
   routes = {};
 
+  routesMetadata = {};
+
   use(name, ...middlewares) {
     if (this.routes[name]) {
       throw new Error(`Route with this name (${name}) already exists`);
+    }
+    if (!this.routesMetadata[name]) {
+      this.routesMetadata[name] = { method: 'GET' };
     }
 
     this.routes[name] = new Route(name, middlewares);
   }
 
   get(name, ...middlewares) {
+    this.routesMetadata[name] = { method: 'GET' };
     this.use(name, ...[middleware.get].concat(middlewares));
   }
 
   post(name, ...middlewares) {
+    this.routesMetadata[name] = { method: 'POST' };
     this.use(name, ...[middleware.post].concat(middlewares));
   }
 

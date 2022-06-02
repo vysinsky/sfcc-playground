@@ -19,7 +19,7 @@ describe('Response', () => {
         "renderings": Array [],
         "statusCode": undefined,
         "view": undefined,
-        "viewData": undefined,
+        "viewData": Object {},
       }
     `);
   });
@@ -153,10 +153,12 @@ describe('Response', () => {
             "42",
           ],
           "event": "route:Test",
+          "listeners": 0,
         },
         Object {
           "arguments": Array [],
           "event": "route:Test2",
+          "listeners": 0,
         },
       ]
     `);

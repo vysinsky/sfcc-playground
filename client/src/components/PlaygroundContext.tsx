@@ -51,11 +51,17 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         [route]: 'loading',
       }));
 
+      const [controller, action] = route.split('-');
+
       try {
         const response = await fetch(
           `${API_BASE_URL}/routes/${route}?${new URLSearchParams({
             simulateHttps: simulateHttps ? 'true' : 'false',
-          })}`
+          })}`,
+          {
+            method: routes.find((r) => r.name === controller)!.metadata[action]
+              .method,
+          }
         );
 
         if (response.ok) {
@@ -80,7 +86,7 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         console.error(e);
       }
     },
-    [setRouteCallStatus, simulateHttps]
+    [setRouteCallStatus, simulateHttps, routes]
   );
 
   return (

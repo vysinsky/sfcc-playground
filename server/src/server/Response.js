@@ -28,9 +28,11 @@ class Response {
 
   view;
 
-  viewData;
+  viewData = {};
 
   events = [];
+
+  eventListeners = {};
 
   log(...args) {
     const output = args.map(function (item) {
@@ -139,10 +141,26 @@ class Response {
   }
 
   emit(event, ...args) {
+    if (this.eventListeners[event]) {
+      this.eventListeners[event].forEach((listener) => {
+        listener(...args);
+      });
+    }
     this.events.push({
       event,
+      listeners: this.eventListeners[event]
+        ? this.eventListeners[event].length
+        : 0,
       arguments: args.map((a) => inspect(a, false, 2, false)),
     });
+  }
+
+  addListener(event, callback) {
+    if (!this.eventListeners[event]) {
+      this.eventListeners[event] = [];
+    }
+
+    this.eventListeners[event].push(callback);
   }
 
   _applyViewData(data = {}) {

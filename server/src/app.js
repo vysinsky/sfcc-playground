@@ -26,7 +26,6 @@ setupAliases(
 );
 
 const server = require('./server/Server');
-const Session = require('./server/Session');
 const Request = require('./server/Request');
 const Response = require('./server/Response');
 const { locateAllFilesInCartridges } = require('./utils');
@@ -49,6 +48,7 @@ app.get('/api/routes', (req, res, next) => {
     routes.push({
       name: controllerName,
       actions: actionsExtractor.extractControllerActions(filePath),
+      metadata: server.routesMetadata,
     });
   });
 
@@ -60,7 +60,7 @@ app.all('/api/routes/:route', (req, res, next) => {
   server.clearRoutes();
   const [controllerName, action] = req.params.route.split('-');
 
-  global.session = new Session();
+  // noinspection JSConstantReassignment
   global.request = new Request(req, global.customer, global.session);
   global.response = new Response();
 
