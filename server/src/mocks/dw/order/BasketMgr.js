@@ -1,7 +1,21 @@
-const ArrayList = require('../../../../../sfra/test/mocks/dw.util.Collection');
+const ArrayList = require('dw/util/ArrayList');
 
 function getCurrentBasket() {
   return {
+    allProductLineItems: new ArrayList([
+      {
+        UUID: undefined,
+        getOptionProductLineItems: function () {
+          return new ArrayList();
+        },
+        bonusProductLineItems: new ArrayList([]),
+        bonusProducts: new ArrayList([]),
+        custom: {},
+        quantityValue: 0,
+        product: new (require('dw/catalog/Product'))(),
+        bundledProductLineItems: new ArrayList([]),
+      },
+    ]),
     defaultShipment: {
       shippingAddress: {
         firstName: 'Amanda',
@@ -42,6 +56,8 @@ function getCurrentBasket() {
           this.phone = phoneInput;
         },
       },
+      setShippingMethod: function () {},
+      createShippingAddress: function () {},
     },
     totalGrossPrice: {
       value: 250.0,
@@ -54,7 +70,7 @@ function getCurrentBasket() {
     allShippingPriceAdjustments: new ArrayList(),
     bonusDiscountLineItems: new ArrayList([
       {
-        UUID: 'someUUID',
+        UUID: undefined,
         getBonusProductPrice: function () {
           return {
             toFormattedString: function () {
@@ -62,6 +78,9 @@ function getCurrentBasket() {
             },
           };
         },
+        bonusProductLineItems: new ArrayList([]),
+        bonusProducts: new ArrayList([]),
+        custom: {},
       },
     ]),
     getBonusDiscountLineItems: function () {
@@ -77,6 +96,19 @@ function getCurrentBasket() {
         subtract() {
           return { value: 0 };
         },
+      };
+    },
+    createBillingAddress() {
+      return {
+        setFirstName() {},
+        setLastName() {},
+        setAddress1() {},
+        setAddress2() {},
+        setCity() {},
+        setPostalCode() {},
+        setStateCode() {},
+        setCountryCode() {},
+        setPhone() {},
       };
     },
     shippingTotalPrice: {

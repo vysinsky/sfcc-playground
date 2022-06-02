@@ -1,12 +1,20 @@
+const ArrayList = require('../mocks/dw/util/ArrayList');
+
 class Request {
   error = {};
 
   get queryString() {
-    return this.expressRequest.query;
+    return this.querystring;
   }
 
   get querystring() {
-    return this.expressRequest.query;
+    return {
+      ...this.expressRequest.query,
+      components: '[]',
+      pids: '{"bonusProducts": []}',
+      data: '{}',
+      Location: { stringValue: '' },
+    };
   }
 
   get https() {
@@ -21,6 +29,7 @@ class Request {
     return {
       pageMetaTags: [],
       addPageMetaTags() {},
+      setTitle() {},
     };
   }
 
@@ -35,21 +44,20 @@ class Request {
       profile: {
         email: 'abc@test.com',
       },
-      addressBook: {
-        addresses: [],
-        preferredAddress: {
-          address1: '5 Wall St.',
-        },
+      wallet: {
+        paymentInstruments: [],
+        removePaymentInstrument() {},
       },
+      addressBook: new (require('dw/customer/AddressBook'))(),
       raw: {
         getOrderHistory: function () {
           return {
             getOrders: function () {
-              return {
-                first: function () {
-                  return null;
-                },
-              };
+              const r = new ArrayList().iterator();
+
+              r.first = function () {};
+
+              return r;
             },
           };
         },
@@ -69,11 +77,17 @@ class Request {
     return {};
   }
 
+  get httpHeaders() {
+    return this.expressRequest;
+  }
+
   constructor(expressRequest, customer, session) {
     this.expressRequest = expressRequest;
     this.customer = customer;
     this.session = session;
   }
+
+  setLocale(locale) {}
 }
 
 module.exports = Request;

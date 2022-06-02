@@ -57,6 +57,61 @@ class Session {
         })(),
         clearFormElement() {},
       },
+      coCustomer: {
+        email: new FormField(),
+        clearFormElement() {},
+      },
+      coRegisteredCustomer: {
+        email: new FormField(),
+        clearFormElement() {},
+      },
+      billing: {
+        addressFields: (() => {
+          const group = new FormGroup();
+
+          group.firstName = new FormField();
+          group.lastName = new FormField();
+          group.address1 = new FormField();
+          group.address2 = new FormField();
+          group.city = new FormField();
+          group.postalCode = new FormField();
+          group.country = new FormField();
+          group.phone = new FormField();
+
+          return group;
+        })(),
+        contactInfoFields: (() => {
+          const group = new FormGroup();
+
+          group.firstName = new FormField();
+          group.lastName = new FormField();
+          group.address1 = new FormField();
+          group.address2 = new FormField();
+          group.city = new FormField();
+          group.postalCode = new FormField();
+          group.country = new FormField();
+          group.phone = new FormField();
+
+          return group;
+        })(),
+        paymentMethod: new FormField(),
+        clearFormElement() {},
+      },
+      creditCard: {
+        expirationMonth: (() => {
+          const f = new FormField();
+
+          f.options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+          f.options.optionsCount = 12;
+
+          return f;
+        })(),
+        cardOwner: new FormField(),
+        cardNumber: new FormField(),
+        cardType: new FormField(),
+        expirationYear: new FormField(),
+        clearFormElement() {},
+      },
     };
   }
 
@@ -89,7 +144,9 @@ class Session {
   }
 
   get raw() {
-    return {};
+    return {
+      setTrackingAllowed() {},
+    };
   }
 
   get currency() {

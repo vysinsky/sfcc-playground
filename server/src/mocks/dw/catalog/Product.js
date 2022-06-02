@@ -1,4 +1,5 @@
 var _super = require('dw/object/ExtensibleObject');
+const ArrayList = require('dw/util/ArrayList');
 
 var Product = function () {};
 
@@ -84,20 +85,24 @@ Product.prototype.getTaxClassID = function () {};
 Product.prototype.isAvailable = function () {};
 Product.prototype.getAvailableFlag = function () {};
 Product.prototype.setAvailableFlag = function () {};
-Product.prototype.getPriceModel = function () {};
+Product.prototype.getPriceModel = function () {
+  return this.priceModel;
+};
 Product.prototype.getVariationModel = function () {};
 Product.prototype.getProductLinks = function () {};
 Product.prototype.getIncomingProductLinks = function () {};
 Product.prototype.getAllProductLinks = function () {};
 Product.prototype.getAllIncomingProductLinks = function () {};
 Product.prototype.getAttributeModel = function () {};
-Product.prototype.getImages = function () {};
+Product.prototype.getImages = function () {
+  return new ArrayList();
+};
 Product.prototype.getOrderableRecommendations = function () {};
 Product.prototype.getAvailabilityModel = function () {};
 Product.prototype.getAllRecommendations = function () {};
 Product.prototype.getActiveData = function () {};
 Product.prototype.name = null;
-Product.prototype.ID = null;
+Product.prototype.ID = '';
 Product.prototype.variants = null;
 Product.prototype.image = null;
 Product.prototype.shortDescription = null;
@@ -130,25 +135,32 @@ Product.prototype.searchableFlag = null;
 Product.prototype.EAN = null;
 Product.prototype.UPC = null;
 Product.prototype.brand = null;
-Product.optionModel = new (require('dw/catalog/ProductOptionModel'))();
+Product.prototype.optionModel =
+  new (require('dw/catalog/ProductOptionModel'))();
 Product.prototype.bundledProductQuantity = null;
 Product.prototype.bundledProducts = null;
 Product.prototype.bundles = null;
-Product.prototype.minOrderQuantity = null;
-Product.prototype.stepQuantity = null;
+Product.prototype.minOrderQuantity = {
+  value: 0,
+};
+Product.prototype.stepQuantity = {
+  value: 0,
+};
 Product.prototype.classificationCategory = null;
 Product.prototype.manufacturerName = null;
 Product.prototype.manufacturerSKU = null;
 Product.prototype.unit = null;
 Product.prototype.taxClassID = null;
 Product.prototype.availableFlag = null;
-Product.prototype.priceModel = null;
-Product.prototype.variationModel = null;
+Product.prototype.priceModel = new (require('dw/catalog/ProductPriceModel'))();
+Product.prototype.variationModel =
+  new (require('dw/catalog/ProductVariationModel'))();
 Product.prototype.productLinks = null;
 Product.prototype.incomingProductLinks = null;
 Product.prototype.allProductLinks = null;
 Product.prototype.allIncomingProductLinks = null;
-Product.prototype.attributeModel = null;
+Product.prototype.attributeModel =
+  new (require('dw/catalog/ProductAttributeModel'))();
 Product.prototype.images = null;
 Product.prototype.orderableRecommendations = null;
 Product.prototype.availabilityModel =

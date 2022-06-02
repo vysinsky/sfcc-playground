@@ -28,6 +28,7 @@ CustomerMgr.authenticateCustomer = function () {
 CustomerMgr.loginCustomer = function () {
   return { authenticatedCustomer: {} };
 };
+CustomerMgr.logoutCustomer = function () {};
 CustomerMgr.getCustomerByToken = function () {};
 CustomerMgr.isAcceptablePassword = function () {
   return true;
