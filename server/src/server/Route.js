@@ -2,6 +2,11 @@ class Route {
   constructor(name, chain) {
     this.name = name;
     this.chain = chain;
+    this.chain.on = this.on.bind(this);
+  }
+
+  on(event, callback) {
+    global.response.addListener(event, callback);
   }
 
   getRoute() {
@@ -55,7 +60,7 @@ class Route {
   }
 
   emit(event, ...args) {
-    global.response.emit(event, args);
+    global.response.emit(event, ...args);
   }
 }
 
