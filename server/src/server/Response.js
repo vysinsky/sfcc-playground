@@ -1,6 +1,6 @@
 const { inspect } = require('util');
 const dm = require('deepmerge');
-const { locateSingleFileInCartridges } = require('../utils');
+const { locateTemplate } = require('../utils');
 const { readFileSync } = require('cosmiconfig/dist/readFile');
 
 class Response {
@@ -49,9 +49,7 @@ class Response {
     this._applyViewData(data);
     this.view = name;
 
-    const templatePath = locateSingleFileInCartridges(
-      `templates/default/${name}.isml`
-    );
+    const templatePath = locateTemplate(name, request.locale);
 
     this._appendRenderings({
       type: 'render',

@@ -1,3 +1,4 @@
+const Request = require('../../../server/src/server/Request');
 const Response = require('../../../server/src/server/Response');
 
 describe('Response', () => {
@@ -25,6 +26,7 @@ describe('Response', () => {
   });
 
   test('toJson with some calls on response', () => {
+    global.request = new Request({ query: {} });
     const response = new Response();
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',

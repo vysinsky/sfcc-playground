@@ -3,6 +3,8 @@ const ArrayList = require('../mocks/dw/util/ArrayList');
 class Request {
   error = {};
 
+  _locale = 'default';
+
   get queryString() {
     return this.querystring;
   }
@@ -35,7 +37,7 @@ class Request {
 
   get locale() {
     return {
-      id: 'en_US',
+      id: this._locale,
     };
   }
 
@@ -85,9 +87,12 @@ class Request {
     this.expressRequest = expressRequest;
     this.customer = customer;
     this.session = session;
+    this._locale = expressRequest.query.lang || 'default';
   }
 
-  setLocale(locale) {}
+  setLocale(locale) {
+    this._locale = locale;
+  }
 }
 
 module.exports = Request;
