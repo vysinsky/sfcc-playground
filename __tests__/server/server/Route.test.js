@@ -4,7 +4,7 @@ const Response = require('../../../server/src/server/Response');
 
 describe('Route', () => {
   test('getRoute', () => {
-    global.request = new Request();
+    global.request = new Request({ query: {} });
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -28,7 +28,7 @@ describe('Route', () => {
   });
 
   test('getRoute with errors in request', () => {
-    global.request = new Request();
+    global.request = new Request({ query: {} });
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -59,7 +59,7 @@ describe('Route', () => {
   });
 
   test('getRoute with errors in middleware', () => {
-    global.request = new Request();
+    global.request = new Request({ query: {} });
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) =>
@@ -82,7 +82,7 @@ describe('Route', () => {
   });
 
   test('getRoute append', () => {
-    global.request = new Request();
+    global.request = new Request({ query: {} });
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -113,7 +113,7 @@ describe('Route', () => {
   });
 
   test('getRoute - break chain on redirect', () => {
-    global.request = new Request();
+    global.request = new Request({ query: {} });
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => {

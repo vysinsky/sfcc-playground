@@ -24,6 +24,41 @@ function locateSingleFileInCartridges(path) {
 }
 
 /**
+ * Locates template respecting the locale
+ * @param templateName {string}
+ * @param locale {{ id: string }}
+ */
+function locateTemplate(templateName, locale) {
+  const langCode = locale.id;
+
+  const localeTemplate = locateSingleFileInCartridges(
+    `templates/${langCode}/${templateName}.isml`
+  );
+
+  if (localeTemplate) {
+    return localeTemplate;
+  }
+
+  const [language] = langCode.split('_');
+
+  const langTemplate = locateSingleFileInCartridges(
+    `templates/${language}/${templateName}.isml`
+  );
+
+  if (langTemplate) {
+    return langTemplate;
+  }
+
+  const defaultTemplate = locateSingleFileInCartridges(
+    `templates/default/${templateName}.isml`
+  );
+
+  if (defaultTemplate) {
+    return defaultTemplate;
+  }
+}
+
+/**
  * Locates all files according to cartridge path.
  * Ignores non-existing cartridges.
  *
@@ -51,4 +86,5 @@ function locateAllFilesInCartridges(path) {
 module.exports = {
   locateSingleFileInCartridges,
   locateAllFilesInCartridges,
+  locateTemplate,
 };
