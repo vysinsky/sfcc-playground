@@ -14,12 +14,14 @@ export type PlaygroundContextType = {
   routes: Route[];
   selectedRoutes: SelectedRoutes;
   simulateHttps: boolean;
+  locale: string;
   enableHttpsSimulation: () => void;
   disableHttpsSimulation: () => void;
   setSelectedRoutes: React.Dispatch<React.SetStateAction<SelectedRoutes>>;
   executeRoute: (route: string) => Promise<void>;
   routeCallStatus: RouteCallResults;
   setRouteCallStatus: React.Dispatch<React.SetStateAction<RouteCallResults>>;
+  setLocale: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export type Route = {

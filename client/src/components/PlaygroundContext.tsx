@@ -20,17 +20,20 @@ export const PlaygroundContext = createContext<PlaygroundContextType>({
   selectedRoutes: {},
   loaded: false,
   simulateHttps: true,
+  locale: 'default',
   enableHttpsSimulation: () => {},
   disableHttpsSimulation: () => {},
   setSelectedRoutes: () => {},
   executeRoute: async () => {},
   routeCallStatus: {},
   setRouteCallStatus: () => {},
+  setLocale: () => {},
 });
 
 function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
   const [selectedRoutes, setSelectedRoutes] = useState<SelectedRoutes>({});
   const [routeCallStatus, setRouteCallStatus] = useState<RouteCallResults>({});
+  const [locale, setLocale] = useState('default');
   const [loaded, setLoaded] = useState(false);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [simulateHttps, setSimulateHttps] = useState(true);
@@ -57,6 +60,7 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         const response = await fetch(
           `${API_BASE_URL}/routes/${route}?${new URLSearchParams({
             simulateHttps: simulateHttps ? 'true' : 'false',
+            lang: locale ? locale : 'default',
           })}`,
           {
             method: routes.find((r) => r.name === controller)!.metadata[action]
@@ -86,7 +90,7 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         console.error(e);
       }
     },
-    [setRouteCallStatus, simulateHttps, routes]
+    [setRouteCallStatus, simulateHttps, routes, locale]
   );
 
   return (
@@ -96,6 +100,7 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         routes,
         selectedRoutes,
         simulateHttps,
+        locale,
         setSelectedRoutes,
         enableHttpsSimulation: () => {
           setSimulateHttps(true);
@@ -106,6 +111,7 @@ function PlaygroundContextProvider({ children }: PropsWithChildren<any>) {
         executeRoute,
         routeCallStatus,
         setRouteCallStatus,
+        setLocale,
       }}
     >
       {loaded ? children : <Loader />}
