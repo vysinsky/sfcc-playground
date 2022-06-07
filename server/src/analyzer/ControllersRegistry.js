@@ -5,19 +5,27 @@ class ControllersRegistry {
 
   registerAllControllers(cartridgesPath) {
     cartridgesPath.split(':').forEach((cartridge) => {
-      const path = realpathSync(
-        `${playgroundConfig.cartridgesDir}/${cartridge}/cartridge/controllers`
-      );
+      try {
+        const path = realpathSync(
+          `${playgroundConfig.cartridgesDir}/${cartridge}/cartridge/controllers`
+        );
 
-      readdirSync(path)
-        .filter((fileName) => fileName.match(/[A-Z]+/))
-        .forEach((fileName) => {
-          this.registerController(
-            cartridge,
-            fileName.replace('.js', ''),
-            `${path}/${fileName}`
-          );
-        });
+        readdirSync(path)
+          .filter((fileName) => fileName.match(/[A-Z]+/))
+          .forEach((fileName) => {
+            this.registerController(
+              cartridge,
+              fileName.replace('.js', ''),
+              `${path}/${fileName}`
+            );
+          });
+      } catch (e) {
+        if (e.code === 'ENOENT') {
+          // Ignore cartridge that does not exist
+        } else {
+          throw e;
+        }
+      }
     });
   }
 
