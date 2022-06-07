@@ -2,12 +2,17 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import './Header.css';
-import { Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { PlaygroundContext } from './PlaygroundContext';
 
 export function Header() {
-  const { simulateHttps, enableHttpsSimulation, disableHttpsSimulation } =
-    useContext(PlaygroundContext);
+  const {
+    simulateHttps,
+    enableHttpsSimulation,
+    disableHttpsSimulation,
+    locale,
+    setLocale,
+  } = useContext(PlaygroundContext);
 
   return (
     <div>
@@ -16,17 +21,34 @@ export function Header() {
           <Link to="/">Salesforce Playground</Link>
         </div>
         <Form>
-          <Form.Check
-            type="switch"
-            id="http-simulation-toggle"
-            checked={simulateHttps}
-            onChange={() => {
-              simulateHttps
-                ? disableHttpsSimulation()
-                : enableHttpsSimulation();
-            }}
-            label="Simulate HTTPS"
-          />
+          <div className="d-flex align-items-center">
+            <Form.Check
+              style={{ minWidth: 200 }}
+              type="switch"
+              id="http-simulation-toggle"
+              checked={simulateHttps}
+              onChange={() => {
+                simulateHttps
+                  ? disableHttpsSimulation()
+                  : enableHttpsSimulation();
+              }}
+              label="Simulate HTTPS"
+            />
+            <Form.Group controlId="localeInput" as={Row}>
+              <Form.Label column sm={5}>
+                Simulated locale
+              </Form.Label>
+              <Col>
+                <Form.Control
+                  size="sm"
+                  type="text"
+                  value={locale}
+                  onChange={(e) => setLocale(e.target.value)}
+                  placeholder="Simulated locale"
+                />
+              </Col>
+            </Form.Group>
+          </div>
         </Form>
       </div>
     </div>
