@@ -4,6 +4,10 @@
 
 ## Installation
 
+`npm install --global sfcc-playground@beta`
+
+or if you feel adventurous, use alpha
+
 `npm install --global sfcc-playground@alpha`
 
 The playground uses [`dw-api-mock`](https://github.com/SalesforceCommerceCloud/dw-api-mock.git). You need to be able to access the repository ([see the Trailhead module](https://trailhead.salesforce.com/content/learn/modules/b2c-developer-resources-and-tools/b2c-developer-access-repositories)).
@@ -28,12 +32,6 @@ The playground uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) 
 | apiPort | Port to use for API app | 8080 |
 
 ## Usage
-
-The easies way to use the playground is to install package globally.
-
-```shell
-npm install --global sfcc-playground@alpha
-```
 
 Run the playground in your project folder (create a config file if needed).
 
