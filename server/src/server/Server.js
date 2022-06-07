@@ -2,6 +2,8 @@ const middleware = require('*/modules/server/middleware');
 const Route = require('./Route');
 
 class Server {
+  currentController;
+
   routes = {};
 
   routesMetadata = {};
@@ -10,20 +12,23 @@ class Server {
     if (this.routes[name]) {
       throw new Error(`Route with this name (${name}) already exists`);
     }
-    if (!this.routesMetadata[name]) {
-      this.routesMetadata[name] = { method: 'GET' };
+    if (
+      !this.routesMetadata[this.currentController] ||
+      !this.routesMetadata[this.currentController][name]
+    ) {
+      this._collectMetadata(name, { method: 'GET' });
     }
 
     this.routes[name] = new Route(name, middlewares);
   }
 
   get(name, ...middlewares) {
-    this.routesMetadata[name] = { method: 'GET' };
+    this._collectMetadata(name, { method: 'GET' });
     this.use(name, ...[middleware.get].concat(middlewares));
   }
 
   post(name, ...middlewares) {
-    this.routesMetadata[name] = { method: 'POST' };
+    this._collectMetadata(name, { method: 'POST' });
     this.use(name, ...[middleware.post].concat(middlewares));
   }
 
@@ -86,6 +91,14 @@ class Server {
 
   clearRoutes() {
     this.routes = {};
+  }
+
+  _collectMetadata(action, metadata) {
+    if (!this.routesMetadata[this.currentController]) {
+      this.routesMetadata[this.currentController] = {};
+    }
+
+    this.routesMetadata[this.currentController][action] = metadata;
   }
 }
 

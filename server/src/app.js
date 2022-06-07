@@ -43,14 +43,28 @@ app.get('/api/routes', (req, res, next) => {
 
   const routes = [];
 
-  Object.entries(controllers).forEach(([controllerName, { filePath }]) => {
-    server.clearRoutes();
-    routes.push({
-      name: controllerName,
-      actions: actionsExtractor.extractControllerActions(filePath),
-      metadata: server.routesMetadata,
-    });
-  });
+  Object.entries(controllers).forEach(
+    ([controllerName, { cartridges, filePaths }]) => {
+      server.currentController = controllerName;
+      server.clearRoutes();
+
+      let actions = [];
+      cartridges.reverse().forEach((cartridge) => {
+        actions = [
+          ...actions,
+          ...actionsExtractor.extractControllerActions(filePaths[cartridge]),
+        ];
+      });
+
+      routes.push({
+        name: controllerName,
+        actions: actions.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        }),
+        metadata: server.routesMetadata[controllerName],
+      });
+    }
+  );
 
   res.send({ routes });
   next();
