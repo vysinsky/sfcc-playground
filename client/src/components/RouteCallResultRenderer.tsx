@@ -38,6 +38,7 @@ function RouteCallResultRenderer({ result }: Props) {
         <Accordion.Header>Basic info</Accordion.Header>
         <Accordion.Body>
           <ul>
+            <li>Status code: {result.statusCode}</li>
             <li>View: {result.view}</li>
             <li>
               Caching: {result.cachePeriod} {result.cachePeriodUnit}

@@ -49,4 +49,5 @@ export type RouteCallResult = {
   view: string;
   viewData: any;
   messageLog: string[];
+  statusCode: number;
 };
