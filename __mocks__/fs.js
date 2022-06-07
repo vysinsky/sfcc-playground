@@ -9,6 +9,11 @@ fs.__setMockDirectoryContent = function (directoryPath, directoryContent) {
 };
 
 fs.realpathSync = function (path) {
+  if (path.includes('cartridge_c')) {
+    const e = new Error();
+    e.code = 'ENOENT';
+    throw e;
+  }
   return path;
 };
 

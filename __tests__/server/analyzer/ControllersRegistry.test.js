@@ -166,4 +166,41 @@ describe('ControllersRegistry', () => {
       }
     `);
   });
+
+  test('ignores non-existent cartridges', () => {
+    global.playgroundConfig = {
+      cartridgesDir: 'cartridges',
+    };
+
+    controllersRegistry.registerAllControllers('cartridge_c:cartridge_a');
+
+    expect(controllersRegistry.controllers).toMatchInlineSnapshot(`
+      Object {
+        "Account": Object {
+          "cartridges": Array [
+            "cartridge_a",
+          ],
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          },
+        },
+        "Home": Object {
+          "cartridges": Array [
+            "cartridge_a",
+          ],
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+          },
+        },
+        "Tile": Object {
+          "cartridges": Array [
+            "cartridge_a",
+          ],
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+          },
+        },
+      }
+    `);
+  });
 });
