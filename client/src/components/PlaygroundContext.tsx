@@ -11,7 +11,7 @@ import {
   Route,
   RouteCallResults,
   SelectedRoutes,
-} from '../../types/types';
+} from '../types';
 import { API_BASE_URL } from '../consts';
 import Loader from './Loader';
 

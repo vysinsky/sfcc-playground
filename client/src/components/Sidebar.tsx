@@ -5,7 +5,7 @@ import 'metismenu/dist/metisMenu.min.css';
 import 'metismenu';
 import './Sidebar.css';
 import { PlaygroundContext } from './PlaygroundContext';
-import { SelectedRoutes } from '../../types/types';
+import { SelectedRoutes } from '../types';
 import { Button, Form } from 'react-bootstrap';
 
 function Sidebar() {
