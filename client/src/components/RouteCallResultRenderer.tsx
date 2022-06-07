@@ -52,8 +52,8 @@ function RouteCallResultRenderer({ result }: Props) {
           Renderings ({result.renderings.length})
         </Accordion.Header>
         <Accordion.Body>
-          {result.renderings.map((rendering) => (
-            <JSONPretty data={rendering} />
+          {result.renderings.map((rendering, i) => (
+            <JSONPretty key={i} data={rendering} />
           ))}
         </Accordion.Body>
       </Accordion.Item>
@@ -66,8 +66,8 @@ function RouteCallResultRenderer({ result }: Props) {
       <Accordion.Item eventKey="events">
         <Accordion.Header>Events ({result.events.length})</Accordion.Header>
         <Accordion.Body>
-          {result.events.map((event) => (
-            <JSONPretty data={event} />
+          {result.events.map((event, i) => (
+            <JSONPretty key={i} data={event} />
           ))}
         </Accordion.Body>
       </Accordion.Item>
@@ -76,8 +76,10 @@ function RouteCallResultRenderer({ result }: Props) {
           Message log ({result.messageLog.length})
         </Accordion.Header>
         <Accordion.Body>
-          {result.messageLog.map((message) => (
-            <Alert variant="info">{message}</Alert>
+          {result.messageLog.map((message, i) => (
+            <Alert key={i} variant="info">
+              {message}
+            </Alert>
           ))}
         </Accordion.Body>
       </Accordion.Item>
