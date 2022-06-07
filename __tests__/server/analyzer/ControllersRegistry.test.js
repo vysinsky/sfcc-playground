@@ -45,19 +45,25 @@ describe('ControllersRegistry', () => {
           "cartridges": Array [
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          },
         },
         "Home": Object {
           "cartridges": Array [
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+          },
         },
         "Tile": Object {
           "cartridges": Array [
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+          },
         },
       }
     `);
@@ -76,27 +82,37 @@ describe('ControllersRegistry', () => {
           "cartridges": Array [
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          },
         },
         "Home": Object {
           "cartridges": Array [
             "cartridge_a",
             "cartridge_b",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Home.js",
+          },
         },
         "Product": Object {
           "cartridges": Array [
             "cartridge_b",
           ],
-          "filePath": "cartridges/cartridge_b/cartridge/controllers/Product.js",
+          "filePaths": Object {
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Product.js",
+          },
         },
         "Tile": Object {
           "cartridges": Array [
             "cartridge_a",
             "cartridge_b",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Tile.js",
+          },
         },
       }
     `);
@@ -115,27 +131,37 @@ describe('ControllersRegistry', () => {
           "cartridges": Array [
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Account.js",
+          },
         },
         "Home": Object {
           "cartridges": Array [
             "cartridge_b",
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_b/cartridge/controllers/Home.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Home.js",
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Home.js",
+          },
         },
         "Product": Object {
           "cartridges": Array [
             "cartridge_b",
           ],
-          "filePath": "cartridges/cartridge_b/cartridge/controllers/Product.js",
+          "filePaths": Object {
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Product.js",
+          },
         },
         "Tile": Object {
           "cartridges": Array [
             "cartridge_b",
             "cartridge_a",
           ],
-          "filePath": "cartridges/cartridge_b/cartridge/controllers/Tile.js",
+          "filePaths": Object {
+            "cartridge_a": "cartridges/cartridge_a/cartridge/controllers/Tile.js",
+            "cartridge_b": "cartridges/cartridge_b/cartridge/controllers/Tile.js",
+          },
         },
       }
     `);
