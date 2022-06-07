@@ -3,7 +3,7 @@ import { Accordion, Alert, Badge } from 'react-bootstrap';
 import JSONPretty from 'react-json-pretty';
 import 'react-json-pretty/themes/monikai.css';
 
-import { RouteCallError, RouteCallResult } from '../../types/types';
+import { RouteCallError, RouteCallResult } from '../types';
 
 interface Props {
   result: RouteCallResult | RouteCallError | 'loading';
