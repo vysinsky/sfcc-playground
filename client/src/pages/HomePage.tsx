@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import {
+  Alert,
   Badge,
   Button,
   ButtonGroup,
@@ -247,8 +248,22 @@ export function HomePage() {
                 </Button>
               </Card.Header>
               <Card.Body>
-                {routeCallStatus[route] && (
+                {routeCallStatus[route] ? (
                   <RouteCallResultRenderer result={routeCallStatus[route]} />
+                ) : (
+                  <Alert variant="info">
+                    No results for action yet.{' '}
+                    <a
+                      href="#call-route"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        executeRoute(route);
+                      }}
+                    >
+                      Call route
+                    </a>{' '}
+                    to get some.
+                  </Alert>
                 )}
               </Card.Body>
             </Card>
