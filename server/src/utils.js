@@ -29,28 +29,22 @@ function locateSingleFileInCartridges(path) {
  * @param locale {{ id: string }}
  */
 function locateTemplate(templateName, locale) {
+  if (!templateName.endsWith('.isml')) {
+    templateName += '.isml';
+  }
+
   const langCode = locale.id;
 
   const localeTemplate = locateSingleFileInCartridges(
-    `templates/${langCode}/${templateName}.isml`
+    `templates/${langCode}/${templateName}`
   );
 
   if (localeTemplate) {
     return localeTemplate;
   }
 
-  const [language] = langCode.split('_');
-
-  const langTemplate = locateSingleFileInCartridges(
-    `templates/${language}/${templateName}.isml`
-  );
-
-  if (langTemplate) {
-    return langTemplate;
-  }
-
   const defaultTemplate = locateSingleFileInCartridges(
-    `templates/default/${templateName}.isml`
+    `templates/default/${templateName}`
   );
 
   if (defaultTemplate) {
