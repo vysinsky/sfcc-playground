@@ -28,6 +28,7 @@ setupAliases(
 const server = require('./server/Server');
 const Request = require('./server/Request');
 const Response = require('./server/Response');
+const metadataRegistry = require('./analyzer/MetadataRegistry');
 const { locateAllFilesInCartridges } = require('./utils');
 const controllersRegistry = require('./analyzer/ControllersRegistry');
 const actionsExtractor = require('./analyzer/ActionsExtractor');
@@ -45,11 +46,12 @@ app.get('/api/routes', (req, res, next) => {
 
   Object.entries(controllers).forEach(
     ([controllerName, { cartridges, filePaths }]) => {
-      server.currentController = controllerName;
+      metadataRegistry.currentCaller = controllerName;
       server.clearRoutes();
 
       let actions = [];
       cartridges.reverse().forEach((cartridge) => {
+        metadataRegistry.currentCartridge = cartridge;
         actions = [
           ...actions,
           ...actionsExtractor.extractControllerActions(filePaths[cartridge]),
@@ -61,7 +63,7 @@ app.get('/api/routes', (req, res, next) => {
         actions: actions.filter((value, index, self) => {
           return self.indexOf(value) === index;
         }),
-        metadata: server.routesMetadata[controllerName],
+        metadata: metadataRegistry.getCallerMetadata(controllerName),
       });
     }
   );

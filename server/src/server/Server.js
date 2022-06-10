@@ -1,34 +1,33 @@
 const middleware = require('*/modules/server/middleware');
 const Route = require('./Route');
+const metadataRegistry = require('../analyzer/MetadataRegistry');
 
 class Server {
-  currentController;
+  metadataRegistry;
 
   routes = {};
 
-  routesMetadata = {};
+  constructor(metadataRegistry) {
+    this.metadataRegistry = metadataRegistry;
+  }
 
   use(name, ...middlewares) {
     if (this.routes[name]) {
       throw new Error(`Route with this name (${name}) already exists`);
     }
-    if (
-      !this.routesMetadata[this.currentController] ||
-      !this.routesMetadata[this.currentController][name]
-    ) {
-      this._collectMetadata(name, { method: 'GET' });
-    }
+
+    this.metadataRegistry.collectIfMissing(name, { method: 'GET' });
 
     this.routes[name] = new Route(name, middlewares);
   }
 
   get(name, ...middlewares) {
-    this._collectMetadata(name, { method: 'GET' });
+    this.metadataRegistry.collect(name, { method: 'GET' });
     this.use(name, ...[middleware.get].concat(middlewares));
   }
 
   post(name, ...middlewares) {
-    this._collectMetadata(name, { method: 'POST' });
+    this.metadataRegistry.collect(name, { method: 'POST' });
     this.use(name, ...[middleware.post].concat(middlewares));
   }
 
@@ -92,14 +91,6 @@ class Server {
   clearRoutes() {
     this.routes = {};
   }
-
-  _collectMetadata(action, metadata) {
-    if (!this.routesMetadata[this.currentController]) {
-      this.routesMetadata[this.currentController] = {};
-    }
-
-    this.routesMetadata[this.currentController][action] = metadata;
-  }
 }
 
-module.exports = new Server();
+module.exports = new Server(metadataRegistry);

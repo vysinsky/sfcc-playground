@@ -1,23 +1,25 @@
 const server = require('../../../server/src/server/Server');
+const metadataRegistry = require('../../../server/src/analyzer/MetadataRegistry');
 
 describe('Server', () => {
   beforeEach(() => {
+    metadataRegistry.currentCaller = 'Home';
     server.clearRoutes();
   });
 
   test('get', () => {
-    server.get('Home', () => {});
+    server.get('Show', () => {});
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "Show": Route {
             "chain": Array [
               "middleware.get",
               [Function],
             ],
-            "name": "Home",
+            "name": "Show",
           },
         },
       }
@@ -25,26 +27,26 @@ describe('Server', () => {
   });
 
   test('get throws error when route exists', () => {
-    server.get('Home', () => {});
+    server.get('Show', () => {});
 
     expect(() => {
-      server.get('Home', () => {});
-    }).toThrow('Route with this name (Home) already exists');
+      server.get('Show', () => {});
+    }).toThrow('Route with this name (Show) already exists');
   });
 
   test('post', () => {
-    server.post('Home', () => {});
+    server.post('Show', () => {});
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "Show": Route {
             "chain": Array [
               "middleware.post",
               [Function],
             ],
-            "name": "Home",
+            "name": "Show",
           },
         },
       }
@@ -52,20 +54,20 @@ describe('Server', () => {
   });
 
   test('prepend', () => {
-    server.get('Home', 'original.home');
-    server.prepend('Home', 'prepend.home');
+    server.get('Show', 'original.home');
+    server.prepend('Show', 'prepend.home');
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "Show": Route {
             "chain": Array [
               "prepend.home",
               "middleware.get",
               "original.home",
             ],
-            "name": "Home",
+            "name": "Show",
           },
         },
       }
@@ -73,20 +75,20 @@ describe('Server', () => {
   });
 
   test('append', () => {
-    server.get('Home', 'original.home');
-    server.append('Home', 'append.home');
+    server.get('Show', 'original.home');
+    server.append('Show', 'append.home');
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "Show": Route {
             "chain": Array [
               "middleware.get",
               "original.home",
               "append.home",
             ],
-            "name": "Home",
+            "name": "Show",
           },
         },
       }
@@ -94,18 +96,18 @@ describe('Server', () => {
   });
 
   test('replace', () => {
-    server.get('Home', 'handler.to.be.replaced');
-    server.replace('Home', 'actual.handler');
+    server.get('Show', 'handler.to.be.replaced');
+    server.replace('Show', 'actual.handler');
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "Show": Route {
             "chain": Array [
               "actual.handler",
             ],
-            "name": "Home",
+            "name": "Show",
           },
         },
       }
@@ -114,51 +116,51 @@ describe('Server', () => {
 
   test('prepend throws error if route does not exist', () => {
     expect(() => {
-      server.prepend('Home', 'prepend.home');
-    }).toThrow('Route with this name (Home) does not exist');
+      server.prepend('Show', 'prepend.home');
+    }).toThrow('Route with this name (Show) does not exist');
   });
 
   test('append throws error if route does not exist', () => {
     expect(() => {
-      server.append('Home', 'append.home');
-    }).toThrow('Route with this name (Home) does not exist');
+      server.append('Show', 'append.home');
+    }).toThrow('Route with this name (Show) does not exist');
   });
 
   test('replace throws error if route does not exist', () => {
     expect(() => {
-      server.replace('Home', 'replace.home');
-    }).toThrow('Route with this name (Home) does not exist');
+      server.replace('Show', 'replace.home');
+    }).toThrow('Route with this name (Show) does not exist');
   });
 
   test('extend', () => {
-    server.get('Home', 'superModule.Home');
+    server.get('Show', 'superModule.Show');
     const superModule = server.exports();
     server.clearRoutes();
 
     server.extend(superModule);
 
-    server.prepend('Home', 'extend.Home.prepend');
-    server.append('Home', 'extend.Home.append');
-    server.get('Show', 'extend.Show.get');
+    server.prepend('Show', 'extend.Show.prepend');
+    server.append('Show', 'extend.Show.append');
+    server.get('ErrorNotFound', 'extend.ErrorNotFound.get');
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
-        "Home": [Function],
+        "ErrorNotFound": [Function],
         "Show": [Function],
         "__routes": Object {
-          "Home": Route {
+          "ErrorNotFound": Route {
             "chain": Array [
-              "extend.Home.prepend",
               "middleware.get",
-              "superModule.Home",
-              "extend.Home.append",
+              "extend.ErrorNotFound.get",
             ],
-            "name": "Home",
+            "name": "ErrorNotFound",
           },
           "Show": Route {
             "chain": Array [
+              "extend.Show.prepend",
               "middleware.get",
-              "extend.Show.get",
+              "superModule.Show",
+              "extend.Show.append",
             ],
             "name": "Show",
           },
