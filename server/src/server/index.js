@@ -1,7 +1,8 @@
 const server = require('./Server');
 const Session = require('./Session');
+const SimpleCache = require('*/modules/server/simpleCache');
 
-global.session = new Session();
+global.session = new Session(new SimpleCache());
 
 server.middleware = require('*/modules/server/middleware');
 server.forms = require('*/modules/server/forms/forms')(global.session);

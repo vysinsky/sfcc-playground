@@ -4,7 +4,19 @@ const Response = require('../../../server/src/server/Response');
 
 describe('Route', () => {
   test('getRoute', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -28,7 +40,19 @@ describe('Route', () => {
   });
 
   test('getRoute with errors in request', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -59,7 +83,19 @@ describe('Route', () => {
   });
 
   test('getRoute with errors in middleware', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) =>
@@ -82,7 +118,19 @@ describe('Route', () => {
   });
 
   test('getRoute append', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => next());
@@ -113,7 +161,19 @@ describe('Route', () => {
   });
 
   test('getRoute - break chain on redirect', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     global.response = new Response();
 
     const chain0 = jest.fn((req, res, next) => {
