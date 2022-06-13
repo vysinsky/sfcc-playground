@@ -1,7 +1,22 @@
-const SimpleCache = require('*/modules/server/simpleCache');
 const FormField = require('dw/web/FormField');
 const FormGroup = require('dw/web/FormGroup');
 class Session {
+  _locale = 'default';
+
+  get locale() {
+    return {
+      id: this._locale,
+    };
+  }
+
+  set locale(locale) {
+    this._locale = locale;
+  }
+
+  setLocale(locale) {
+    this._locale = locale;
+  }
+
   get forms() {
     return {
       profile: {
@@ -158,8 +173,8 @@ class Session {
     };
   }
 
-  constructor() {
-    this.privacyCache = new SimpleCache({});
+  constructor(privacyCache) {
+    this.privacyCache = privacyCache;
   }
 }
 

@@ -26,7 +26,19 @@ describe('Response', () => {
   });
 
   test('toJson with some calls on response', () => {
-    global.request = new Request({ query: {} });
+    global.request = new Request(
+      { query: {} },
+      {},
+      {
+        _locale: 'default',
+        get locale() {
+          return { id: this._locale };
+        },
+        set locale(locale) {
+          this._locale = locale;
+        },
+      }
+    );
     const response = new Response();
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',
