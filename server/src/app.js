@@ -18,12 +18,7 @@ const config = dm(
 global.playgroundConfig = config;
 
 const setupAliases = require('./aliases');
-setupAliases(
-  config.cartridgesDir,
-  config.cartridgePath,
-  config.modulesPath,
-  config.rootDir
-);
+setupAliases(config.cartridgesDir, config.cartridgePath, config.modulesPath);
 
 const server = require('./server/Server');
 const Request = require('./server/Request');

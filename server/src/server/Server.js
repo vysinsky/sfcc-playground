@@ -22,13 +22,11 @@ class Server {
   }
 
   get(name, ...middlewares) {
-    this.metadataRegistry.collect(name, { method: 'GET' });
-    this.use(name, ...[middleware.get].concat(middlewares));
+    this._handleRequest(name, 'GET', [middleware.get, ...middlewares]);
   }
 
   post(name, ...middlewares) {
-    this.metadataRegistry.collect(name, { method: 'POST' });
-    this.use(name, ...[middleware.post].concat(middlewares));
+    this._handleRequest(name, 'POST', [middleware.post, ...middlewares]);
   }
 
   extend(server) {
@@ -90,6 +88,11 @@ class Server {
 
   clearRoutes() {
     this.routes = {};
+  }
+
+  _handleRequest(name, method, middlewares) {
+    this.metadataRegistry.collect(name, { method });
+    this.use(name, ...middlewares);
   }
 }
 
