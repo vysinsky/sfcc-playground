@@ -19,11 +19,11 @@
     "dev:api": "nodemon -q server/src/index.js",
     "dev:ui": "cd client; yarn start; cd ..",
     "build:ui": "cd client; yarn build; cd ..",
-    "lint": "prettier --check bin server client __tests__ __mocks__ types",
+    "lint": "prettier --check bin server client __tests__ __mocks__",
     "test": "jest",
     "test:watch": "jest --watch",
     "posttest": "npm run format",
-    "format": "prettier --loglevel warn --write bin server client __tests__ __mocks__ types",
+    "format": "prettier --loglevel warn --write bin server client __tests__ __mocks__",
     "semantic-release": "semantic-release",
     "prepare": "husky install; yarn install-deps",
     "install-deps": "cd client; yarn --frozen-lockfile; cd .."

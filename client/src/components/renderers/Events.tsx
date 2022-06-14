@@ -3,6 +3,7 @@ import { Accordion } from 'react-bootstrap';
 import JSONPretty from 'react-json-pretty';
 
 import { RouteCallResult } from '../../types';
+import { CartridgeBadge } from '../CartridgeBadge';
 
 type Props = {
   eventKey: string;
@@ -15,7 +16,10 @@ export function Events({ eventKey, result }: Props) {
       <Accordion.Header>Events ({result.events.length})</Accordion.Header>
       <Accordion.Body>
         {result.events.map((event, i) => (
-          <JSONPretty key={i} json={event} />
+          <div key={i}>
+            <CartridgeBadge cartridge={event.calledFrom} />
+            <JSONPretty key={i} json={event} />
+          </div>
         ))}
       </Accordion.Body>
     </Accordion.Item>
