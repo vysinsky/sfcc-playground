@@ -32,6 +32,11 @@ jobs:
 
       - name: Jest coverage report
         uses: ArtiomTr/jest-coverage-report-action@v2.0.6
+
+      - name: Report coverage to codeclimate
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
   release:
     name: Release
     runs-on: ubuntu-latest
