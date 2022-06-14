@@ -80,7 +80,8 @@ app.all('/api/routes/:route', (req, res, next) => {
 
   locateAllFilesInCartridges(`controllers/${controllerName}`)
     .reverse()
-    .forEach((controllerFilePath) => {
+    .forEach(({ cartridge, path: controllerFilePath }) => {
+      metadataRegistry.currentCartridge = cartridge;
       const controller = require(controllerFilePath);
       Module.prototype.superModule = controller;
       controllerFound = true;

@@ -4,11 +4,12 @@ const metadataRegistry = require('../../../server/src/analyzer/MetadataRegistry'
 describe('Server', () => {
   beforeEach(() => {
     metadataRegistry.currentCaller = 'Home';
+    metadataRegistry.currentCartridge = 'test_cartridge';
     server.clearRoutes();
   });
 
   test('get', () => {
-    server.get('Show', () => {});
+    server.get('Show', { fn: 'get.show' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -16,8 +17,14 @@ describe('Server', () => {
         "__routes": Object {
           "Show": Route {
             "chain": Array [
-              "middleware.get",
-              [Function],
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.get",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "get.show",
+              },
             ],
             "name": "Show",
           },
@@ -27,7 +34,7 @@ describe('Server', () => {
   });
 
   test('get throws error when route exists', () => {
-    server.get('Show', () => {});
+    server.get('Show', { fn: 'get.show' });
 
     expect(() => {
       server.get('Show', () => {});
@@ -35,7 +42,7 @@ describe('Server', () => {
   });
 
   test('post', () => {
-    server.post('Show', () => {});
+    server.post('Show', { fn: 'post.show' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -43,8 +50,14 @@ describe('Server', () => {
         "__routes": Object {
           "Show": Route {
             "chain": Array [
-              "middleware.post",
-              [Function],
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.post",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "post.show",
+              },
             ],
             "name": "Show",
           },
@@ -54,8 +67,8 @@ describe('Server', () => {
   });
 
   test('prepend', () => {
-    server.get('Show', 'original.home');
-    server.prepend('Show', 'prepend.home');
+    server.get('Show', { fn: 'original.home' });
+    server.prepend('Show', { fn: 'prepend.home' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -63,9 +76,18 @@ describe('Server', () => {
         "__routes": Object {
           "Show": Route {
             "chain": Array [
-              "prepend.home",
-              "middleware.get",
-              "original.home",
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "prepend.home",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.get",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "original.home",
+              },
             ],
             "name": "Show",
           },
@@ -75,8 +97,8 @@ describe('Server', () => {
   });
 
   test('append', () => {
-    server.get('Show', 'original.home');
-    server.append('Show', 'append.home');
+    server.get('Show', { fn: 'original.home' });
+    server.append('Show', { fn: 'append.home' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -84,9 +106,18 @@ describe('Server', () => {
         "__routes": Object {
           "Show": Route {
             "chain": Array [
-              "middleware.get",
-              "original.home",
-              "append.home",
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.get",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "original.home",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "append.home",
+              },
             ],
             "name": "Show",
           },
@@ -96,8 +127,8 @@ describe('Server', () => {
   });
 
   test('replace', () => {
-    server.get('Show', 'handler.to.be.replaced');
-    server.replace('Show', 'actual.handler');
+    server.get('Show', { fn: 'handler.to.be.replaced' });
+    server.replace('Show', { fn: 'actual.handler' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -105,7 +136,10 @@ describe('Server', () => {
         "__routes": Object {
           "Show": Route {
             "chain": Array [
-              "actual.handler",
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "actual.handler",
+              },
             ],
             "name": "Show",
           },
@@ -133,15 +167,15 @@ describe('Server', () => {
   });
 
   test('extend', () => {
-    server.get('Show', 'superModule.Show');
+    server.get('Show', { fn: 'superModule.Show' });
     const superModule = server.exports();
     server.clearRoutes();
 
     server.extend(superModule);
 
-    server.prepend('Show', 'extend.Show.prepend');
-    server.append('Show', 'extend.Show.append');
-    server.get('ErrorNotFound', 'extend.ErrorNotFound.get');
+    server.prepend('Show', { fn: 'extend.Show.prepend' });
+    server.append('Show', { fn: 'extend.Show.append' });
+    server.get('ErrorNotFound', { fn: 'extend.ErrorNotFound.get' });
 
     expect(server.exports()).toMatchInlineSnapshot(`
       Object {
@@ -150,17 +184,35 @@ describe('Server', () => {
         "__routes": Object {
           "ErrorNotFound": Route {
             "chain": Array [
-              "middleware.get",
-              "extend.ErrorNotFound.get",
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.get",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "extend.ErrorNotFound.get",
+              },
             ],
             "name": "ErrorNotFound",
           },
           "Show": Route {
             "chain": Array [
-              "extend.Show.prepend",
-              "middleware.get",
-              "superModule.Show",
-              "extend.Show.append",
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "extend.Show.prepend",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "middleware.get",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "superModule.Show",
+              },
+              Object {
+                "cartridge": "test_cartridge",
+                "fn": "extend.Show.append",
+              },
             ],
             "name": "Show",
           },

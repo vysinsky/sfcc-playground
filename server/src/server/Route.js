@@ -37,15 +37,21 @@ class Route {
         }
 
         if (i < this.chain.length) {
+          response.currentCartridge = 'server/Route';
           this.emit('route:Step', global.request, global.response);
-          this.chain[i++](global.request, global.response, next);
+          const cartridge = this.chain[i].cartridge;
+          const middleware = this.chain[i++].bind(this);
+          response.currentCartridge = cartridge;
+          middleware(global.request, global.response, next);
         } else {
           this.done(global.request, global.response);
         }
       };
 
       i++;
+      response.currentCartridge = 'server/Route';
       this.emit('route:Start', global.request, global.response);
+      response.currentCartridge = this.chain[0].cartridge;
       this.chain[0](global.request, global.response, next);
     };
   }
@@ -55,6 +61,7 @@ class Route {
   }
 
   done(request, response) {
+    response.currentCartridge = 'server/Route';
     this.emit('route:BeforeComplete', request, response);
     this.emit('route:Complete', request, response);
   }

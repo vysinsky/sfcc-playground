@@ -1,3 +1,5 @@
+const { realpathSync } = require('fs');
+
 const Request = require('../../../server/src/server/Request');
 const Response = require('../../../server/src/server/Response');
 
@@ -40,8 +42,10 @@ describe('Response', () => {
       }
     );
     const response = new Response();
+    response.currentCartridge = 'test_cartridge';
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',
+      cartridgesDir: realpathSync(`${__dirname}/../../../__mocks__/cartridges`),
     };
 
     response.log('Some message', 'to log');
@@ -64,21 +68,31 @@ describe('Response', () => {
         "isJson": true,
         "isXml": false,
         "messageLog": Array [
-          "Some message to log",
+          Object {
+            "cartridge": "test_cartridge",
+            "message": "Some message to log",
+          },
         ],
         "redirectStatus": undefined,
         "redirectUrl": undefined,
         "renderings": Array [
           Object {
             "message": "<h2>Print some HTML</h2>",
+            "renderedFrom": "test_cartridge",
             "type": "print",
           },
         ],
         "statusCode": undefined,
         "view": "template",
         "viewData": Object {
-          "render": "this json",
-          "view": "data",
+          "render": Object {
+            "lastUpdateFrom": "test_cartridge",
+            "value": "this json",
+          },
+          "view": Object {
+            "lastUpdateFrom": "test_cartridge",
+            "value": "data",
+          },
         },
       }
     `);
@@ -89,6 +103,7 @@ describe('Response', () => {
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',
     };
+    response.currentCartridge = 'test_cartridge';
 
     response.log('Some message', 'to log');
     response.log('Message with object', { foo: 'bar' });
@@ -114,14 +129,21 @@ describe('Response', () => {
         "isJson": false,
         "isXml": true,
         "messageLog": Array [
-          "Some message to log",
-          "Message with object {\\"foo\\":\\"bar\\"}",
+          Object {
+            "cartridge": "test_cartridge",
+            "message": "Some message to log",
+          },
+          Object {
+            "cartridge": "test_cartridge",
+            "message": "Message with object {\\"foo\\":\\"bar\\"}",
+          },
         ],
         "redirectStatus": 301,
         "redirectUrl": "redirect.url",
         "renderings": Array [
           Object {
             "data": "<xml><document></document></xml>",
+            "renderedFrom": "test_cartridge",
             "subType": "xml",
             "type": "render",
           },
@@ -129,7 +151,10 @@ describe('Response', () => {
         "statusCode": 404,
         "view": undefined,
         "viewData": Object {
-          "xml": "<xml><document></document></xml>",
+          "xml": Object {
+            "lastUpdateFrom": "test_cartridge",
+            "value": "<xml><document></document></xml>",
+          },
         },
       }
     `);
@@ -137,16 +162,26 @@ describe('Response', () => {
 
   test('setViewData properly deep merges', () => {
     const response = new Response();
+    response.currentCartridge = 'test_cartridge';
     response.setViewData({ foo: 'bar', some: { object: 'data' } });
     response.setViewData({ foo2: 'bar2', some: { object2: 'data' } });
 
     expect(response.getViewData()).toMatchInlineSnapshot(`
       Object {
-        "foo": "bar",
-        "foo2": "bar2",
+        "foo": Object {
+          "lastUpdateFrom": "test_cartridge",
+          "value": "bar",
+        },
+        "foo2": Object {
+          "lastUpdateFrom": "test_cartridge",
+          "value": "bar2",
+        },
         "some": Object {
-          "object": "data",
-          "object2": "data",
+          "lastUpdateFrom": "test_cartridge",
+          "value": Object {
+            "object": "data",
+            "object2": "data",
+          },
         },
       }
     `);
@@ -154,6 +189,7 @@ describe('Response', () => {
 
   test('emit', () => {
     const response = new Response();
+    response.currentCartridge = 'test_cartridge';
 
     response.emit('route:Test', { some: 'object' }, 'string value', 42);
     response.emit('route:Test2');
@@ -166,11 +202,13 @@ describe('Response', () => {
             "'string value'",
             "42",
           ],
+          "calledFrom": "test_cartridge",
           "event": "route:Test",
           "listeners": 0,
         },
         Object {
           "arguments": Array [],
+          "calledFrom": "test_cartridge",
           "event": "route:Test2",
           "listeners": 0,
         },
@@ -180,6 +218,7 @@ describe('Response', () => {
 
   test('render page', () => {
     const response = new Response();
+    response.currentCartridge = 'test_cartridge';
 
     response.page('some-page', { page: 'data' }, {});
 
@@ -199,6 +238,7 @@ describe('Response', () => {
           Object {
             "aspectAttributes": Object {},
             "page": "some-page",
+            "renderedFrom": "test_cartridge",
             "subType": "page",
             "type": "render",
           },
@@ -206,7 +246,10 @@ describe('Response', () => {
         "statusCode": undefined,
         "view": undefined,
         "viewData": Object {
-          "page": "data",
+          "page": Object {
+            "lastUpdateFrom": "test_cartridge",
+            "value": "data",
+          },
         },
       }
     `);

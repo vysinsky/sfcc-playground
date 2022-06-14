@@ -1,4 +1,4 @@
 module.exports = {
-  get: 'middleware.get',
-  post: 'middleware.post',
+  get: { fn: 'middleware.get' },
+  post: { fn: 'middleware.post' },
 };
