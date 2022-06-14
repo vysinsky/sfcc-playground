@@ -18,6 +18,10 @@ class Server {
 
     this.metadataRegistry.collectIfMissing(name, { method: 'GET' });
 
+    middlewares.forEach((middleware) => {
+      middleware.cartridge = this.metadataRegistry.currentCartridge;
+    });
+
     this.routes[name] = new Route(name, middlewares);
   }
 
@@ -52,6 +56,10 @@ class Server {
       throw new Error(`Route with this name (${name}) does not exist`);
     }
 
+    middlewares.forEach((middleware) => {
+      middleware.cartridge = this.metadataRegistry.currentCartridge;
+    });
+
     this.routes[name].chain = middlewares.concat(this.routes[name].chain);
   }
 
@@ -59,6 +67,10 @@ class Server {
     if (!this.routes[name]) {
       throw new Error(`Route with this name (${name}) does not exist`);
     }
+
+    middlewares.forEach((middleware) => {
+      middleware.cartridge = this.metadataRegistry.currentCartridge;
+    });
 
     this.routes[name].chain = this.routes[name].chain.concat(middlewares);
   }
@@ -69,6 +81,17 @@ class Server {
     }
 
     delete this.routes[name];
+
+    middlewares.forEach((middleware) => {
+      middleware.cartridge = this.metadataRegistry.currentCartridge;
+    });
+
+    const prevMetadata = this.metadataRegistry.getCallerMetadata(name);
+    this.metadataRegistry.collect(name, {
+      ...prevMetadata,
+      replaced: true,
+      originalCartridge: prevMetadata.cartridge,
+    });
 
     this.use(name, ...middlewares);
   }

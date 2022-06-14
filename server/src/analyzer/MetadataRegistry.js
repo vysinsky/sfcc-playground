@@ -10,7 +10,10 @@ class MetadataRegistry {
       this.data[this.currentCaller] = {};
     }
 
-    this.data[this.currentCaller][action] = metadata;
+    this.data[this.currentCaller][action] = {
+      ...metadata,
+      cartridge: this.currentCartridge,
+    };
   }
 
   collectIfMissing(action, metadata) {
@@ -23,7 +26,7 @@ class MetadataRegistry {
   }
 
   getCallerMetadata(callerName) {
-    return this.data[callerName];
+    return this.data[callerName] || {};
   }
 }
 

@@ -4,6 +4,8 @@ const { locateTemplate } = require('../utils');
 const { readFileSync } = require('cosmiconfig/dist/readFile');
 
 class Response {
+  currentCartridge;
+
   cachePeriod;
 
   cachePeriodUnit;
@@ -42,21 +44,31 @@ class Response {
       return item;
     });
 
-    this.messageLog.push(output.join(' '));
+    this.messageLog.push({
+      cartridge: this.currentCartridge,
+      message: output.join(' '),
+    });
   }
 
   render(name, data) {
     this._applyViewData(data);
     this.view = name;
 
-    const templatePath = locateTemplate(name, request.locale);
+    const { cartridge, path: templatePath } = locateTemplate(
+      name,
+      request.locale
+    );
 
     this._appendRenderings({
       type: 'render',
       subType: 'isml',
       view: name,
-      templatePath,
-      templateSource: templatePath ? readFileSync(templatePath) : undefined,
+      template: {
+        cartridge,
+        path: templatePath,
+        source: templatePath ? readFileSync(templatePath) : undefined,
+      },
+      renderedFrom: this.currentCartridge,
     });
   }
 
@@ -64,13 +76,23 @@ class Response {
     this._applyViewData(data);
     this.isJson = true;
 
-    this._appendRenderings({ type: 'render', subType: 'json', data });
+    this._appendRenderings({
+      type: 'render',
+      subType: 'json',
+      data,
+      renderedFrom: this.currentCartridge,
+    });
   }
 
   xml(xmlString) {
     this.isXml = true;
     this._applyViewData({ xml: xmlString });
-    this._appendRenderings({ type: 'render', subType: 'xml', data: xmlString });
+    this._appendRenderings({
+      type: 'render',
+      subType: 'xml',
+      data: xmlString,
+      renderedFrom: this.currentCartridge,
+    });
   }
 
   cacheExpiration(period) {
@@ -84,6 +106,7 @@ class Response {
       subType: 'page',
       page,
       aspectAttributes,
+      renderedFrom: this.currentCartridge,
     });
   }
 
@@ -92,7 +115,11 @@ class Response {
   }
 
   print(message) {
-    this._appendRenderings({ type: 'print', message });
+    this._appendRenderings({
+      type: 'print',
+      message,
+      renderedFrom: this.currentCartridge,
+    });
   }
 
   getViewData() {
@@ -146,6 +173,7 @@ class Response {
     }
     this.events.push({
       event,
+      calledFrom: this.currentCartridge,
       listeners: this.eventListeners[event]
         ? this.eventListeners[event].length
         : 0,
@@ -162,6 +190,12 @@ class Response {
   }
 
   _applyViewData(data = {}) {
+    Object.keys(data).forEach((key) => {
+      data[key] = {
+        value: data[key],
+        lastUpdateFrom: this.currentCartridge,
+      };
+    });
     this.viewData = dm(this.viewData, data);
   }
 

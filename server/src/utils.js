@@ -14,11 +14,17 @@ function locateSingleFileInCartridges(path) {
     }
 
     if (existsSync(`${dir}/cartridge/${path}`)) {
-      return realpathSync(`${dir}/cartridge/${path}`);
+      return {
+        cartridge,
+        path: realpathSync(`${dir}/cartridge/${path}`),
+      };
     }
 
     if (existsSync(`${dir}/cartridge/${path}.js`)) {
-      return realpathSync(`${dir}/cartridge/${path}.js`);
+      return {
+        cartridge,
+        path: realpathSync(`${dir}/cartridge/${path}.js`),
+      };
     }
   }
 }
@@ -50,6 +56,8 @@ function locateTemplate(templateName, locale) {
   if (defaultTemplate) {
     return defaultTemplate;
   }
+
+  throw new Error(`Template "${templateName}" (locale: ${langCode}) not found`);
 }
 
 /**
@@ -67,11 +75,17 @@ function locateAllFilesInCartridges(path) {
     }
 
     if (existsSync(`${dir}/cartridge/${path}`)) {
-      results.push(realpathSync(`${dir}/cartridge/${path}`));
+      results.push({
+        cartridge,
+        path: realpathSync(`${dir}/cartridge/${path}`),
+      });
     }
 
     if (existsSync(`${dir}/cartridge/${path}.js`)) {
-      results.push(realpathSync(`${dir}/cartridge/${path}.js`));
+      results.push({
+        cartridge,
+        path: realpathSync(`${dir}/cartridge/${path}.js`),
+      });
     }
   }
   return results;

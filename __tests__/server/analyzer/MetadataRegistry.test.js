@@ -7,15 +7,18 @@ describe('MetadataRegistry', function () {
 
   test('collect', () => {
     metadataRegistry.currentCaller = 'Home';
+    metadataRegistry.currentCartridge = 'test_cartridge';
     metadataRegistry.collect('Show', { method: 'GET' });
     metadataRegistry.collect('ErrorNotFound', { method: 'GET' });
 
     expect(metadataRegistry.getCallerMetadata('Home')).toMatchInlineSnapshot(`
       Object {
         "ErrorNotFound": Object {
+          "cartridge": "test_cartridge",
           "method": "GET",
         },
         "Show": Object {
+          "cartridge": "test_cartridge",
           "method": "GET",
         },
       }
@@ -24,6 +27,7 @@ describe('MetadataRegistry', function () {
 
   test('collect if missing', () => {
     metadataRegistry.currentCaller = 'Home';
+    metadataRegistry.currentCartridge = 'test_cartridge';
     metadataRegistry.collect('Show', { method: 'GET' });
     metadataRegistry.collect('ErrorNotFound', { method: 'GET' });
     metadataRegistry.collectIfMissing('Show', { method: 'POST' });
@@ -32,12 +36,15 @@ describe('MetadataRegistry', function () {
     expect(metadataRegistry.getCallerMetadata('Home')).toMatchInlineSnapshot(`
       Object {
         "ErrorNotFound": Object {
+          "cartridge": "test_cartridge",
           "method": "GET",
         },
         "Show": Object {
+          "cartridge": "test_cartridge",
           "method": "GET",
         },
         "Show2": Object {
+          "cartridge": "test_cartridge",
           "method": "GET",
         },
       }
