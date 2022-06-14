@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 import './Header.css';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -18,7 +17,7 @@ export function Header() {
     <div>
       <div className="app-header header-shadow">
         <div className="app-header__title">
-          <Link to="/">Salesforce Playground</Link>
+          <a href="/">Salesforce Playground</a>
         </div>
         <Form>
           <div className="d-flex align-items-center">
