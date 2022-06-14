@@ -1,7 +1,8 @@
 import React from 'react';
-import { Accordion, Alert } from 'react-bootstrap';
+import { Accordion, Col, Row } from 'react-bootstrap';
 
 import { RouteCallResult } from '../../types';
+import { CartridgeBadge } from '../CartridgeBadge';
 
 type Props = { eventKey: string; result: RouteCallResult };
 
@@ -12,10 +13,13 @@ export function LogMessages({ eventKey, result }: Props) {
         Message log ({result.messageLog.length})
       </Accordion.Header>
       <Accordion.Body>
-        {result.messageLog.map((message, i) => (
-          <Alert key={i} variant="info">
-            {message}
-          </Alert>
+        {result.messageLog.map(({ cartridge, message }, i) => (
+          <Row key={i} className="py-2 border-bottom">
+            <Col sm={2}>
+              <CartridgeBadge cartridge={cartridge} />
+            </Col>
+            <Col>{message}</Col>
+          </Row>
         ))}
       </Accordion.Body>
     </Accordion.Item>

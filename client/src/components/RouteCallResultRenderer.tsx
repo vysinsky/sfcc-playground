@@ -27,7 +27,7 @@ function RouteCallResultRenderer({ result }: Props) {
   }
 
   return (
-    <Accordion defaultActiveKey="basics">
+    <Accordion alwaysOpen>
       <BasicInfo eventKey="basics" result={result} />
       <Renderings eventKey="renderings" result={result} />
       <ViewData eventKey="view-data" result={result} />
