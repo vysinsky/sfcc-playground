@@ -4,6 +4,10 @@ const Request = require('../../../server/src/server/Request');
 const Response = require('../../../server/src/server/Response');
 
 describe('Response', () => {
+  beforeEach(() => {
+    global.requireChain = [];
+  });
+
   test('toJson with no calls on response', () => {
     const response = new Response();
 
@@ -20,6 +24,7 @@ describe('Response', () => {
         "redirectStatus": undefined,
         "redirectUrl": undefined,
         "renderings": Array [],
+        "requireChain": Array [],
         "statusCode": undefined,
         "view": undefined,
         "viewData": Object {},
@@ -82,6 +87,7 @@ describe('Response', () => {
             "type": "print",
           },
         ],
+        "requireChain": Array [],
         "statusCode": undefined,
         "view": "template",
         "viewData": Object {
@@ -148,6 +154,7 @@ describe('Response', () => {
             "type": "render",
           },
         ],
+        "requireChain": Array [],
         "statusCode": 404,
         "view": undefined,
         "viewData": Object {
@@ -243,6 +250,7 @@ describe('Response', () => {
             "type": "render",
           },
         ],
+        "requireChain": Array [],
         "statusCode": undefined,
         "view": undefined,
         "viewData": Object {

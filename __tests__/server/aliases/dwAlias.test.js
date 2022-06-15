@@ -3,6 +3,10 @@ const { realpathSync } = require('fs');
 const createDwAliasResolver = require('../../../server/src/aliases/dwAlias');
 
 describe('dwAlias', () => {
+  beforeEach(() => {
+    global.requireChain = [];
+  });
+
   it('finds correct dw file in custom mocks', () => {
     const dwAlias = createDwAliasResolver(
       realpathSync(`${__dirname}/../../../__mocks__`),
