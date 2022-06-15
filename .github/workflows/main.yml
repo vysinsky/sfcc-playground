@@ -31,12 +31,9 @@ jobs:
         run: yarn test
         working-directory: client
 
-      - name: Test and publish coverage to codeclimate
-        uses: paambaati/codeclimate-action@v3.0.0
-        with:
-          coverageCommand: yarn test
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Test server
+        run: yarn test
+
   release:
     name: Release
     runs-on: ubuntu-latest
