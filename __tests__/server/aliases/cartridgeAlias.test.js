@@ -2,6 +2,10 @@ const createCartridgeAliasResolver = require('../../../server/src/aliases/cartri
 const { realpathSync } = require('fs');
 
 describe('cartridgeAlias', () => {
+  beforeEach(() => {
+    global.requireChain = [];
+  });
+
   it('finds correct cartridge file', () => {
     const cartridgeAlias = createCartridgeAliasResolver(
       'cartridge_a',

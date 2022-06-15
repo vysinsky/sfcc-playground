@@ -34,6 +34,7 @@ export type RouteCallError = {
   status: number;
   statusText: string;
   response?: string;
+  requireChain?: [{ from: string; result: string }];
 };
 
 export type RouteCallResult = {
@@ -49,6 +50,7 @@ export type RouteCallResult = {
   viewData: { [key: string]: ViewDataRecord };
   messageLog: { message: string; cartridge: string }[];
   statusCode: number;
+  requireChain?: [{ from: string; result: string }];
 };
 
 export type PlaygroundConfiguration = {

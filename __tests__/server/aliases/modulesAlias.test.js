@@ -3,6 +3,10 @@ const { realpathSync } = require('fs');
 const createModulesAliasResolver = require('../../../server/src/aliases/modulesAlias');
 
 describe('modulesAlias', () => {
+  beforeEach(() => {
+    global.requireChain = [];
+  });
+
   it('finds correct module file', () => {
     const modulesAlias = createModulesAliasResolver(
       realpathSync(`${__dirname}/../../../__mocks__/cartridges/modules`)

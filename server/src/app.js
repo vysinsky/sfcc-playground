@@ -1,3 +1,5 @@
+global.requireChain = [];
+
 const path = require('path');
 const { existsSync } = require('fs');
 const express = require('express');

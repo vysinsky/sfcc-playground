@@ -106,6 +106,7 @@ Product.prototype.ID = '';
 Product.prototype.variants = null;
 Product.prototype.image = null;
 Product.prototype.shortDescription = null;
+Product.prototype.online = true;
 Product.prototype.thumbnail = null;
 Product.prototype.onlineFlag = null;
 Product.prototype.onlineFrom = null;

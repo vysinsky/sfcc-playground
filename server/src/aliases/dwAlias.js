@@ -1,5 +1,7 @@
 const { existsSync, realpathSync } = require('fs');
 
+const { moduleExists } = require('./helpers');
+
 module.exports = function createDwAliasResolver(
   customMocksDir,
   nodeModulesDir
@@ -12,6 +14,10 @@ module.exports = function createDwAliasResolver(
     if (existsSync(`${customMocksDir}/${request}.js`)) {
       console.log('FOUND in custom mocks');
 
+      requireChain.push({
+        from: fromTarget,
+        result: `${customMocksDir}/${request}.js`,
+      });
       return `${customMocksDir}/dw`;
     }
 
@@ -20,8 +26,11 @@ module.exports = function createDwAliasResolver(
       realpathSync(`${nodeModulesDir}/dw-api-mock/dw`)
     );
 
-    if (existsSync(requestedModule) || existsSync(`${requestedModule}.js`)) {
+    const finalPath = moduleExists(requestedModule);
+    if (finalPath) {
       console.log('FOUND in dw-api-mock');
+
+      requireChain.push({ from: fromTarget, result: finalPath });
       return `${nodeModulesDir}/dw-api-mock/dw`;
     }
 

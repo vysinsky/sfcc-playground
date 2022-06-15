@@ -1,4 +1,4 @@
-const { existsSync } = require('fs');
+const { moduleExists } = require('./helpers');
 
 module.exports = function createModulesAliasResolver(modulesDir) {
   return function modulesAlias(fromTarget, request, alias) {
@@ -10,8 +10,11 @@ module.exports = function createModulesAliasResolver(modulesDir) {
 
     const modulePath = `${modulesDir}/${requestedModule}`;
     console.debug(`[PLAYGROUND] Searching for module "${modulePath}"`);
-    if (existsSync(`${modulePath}.js`) || existsSync(`${modulePath}.json`)) {
+    const finalPath = moduleExists(modulePath);
+    if (finalPath) {
       console.debug(`[PLAYGROUND] Alias found in modules`);
+
+      requireChain.push({ from: fromTarget, result: finalPath });
       return modulesDir;
     }
   };

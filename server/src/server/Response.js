@@ -162,6 +162,7 @@ class Response {
       view: this.view,
       viewData: this.viewData,
       events: this.events,
+      requireChain: requireChain,
     };
   }
 

@@ -1,12 +1,4 @@
-const { existsSync } = require('fs');
-
-function moduleExists(modulePath) {
-  return (
-    existsSync(`${modulePath}`) ||
-    existsSync(`${modulePath}.js`) ||
-    existsSync(`${modulePath}.json`)
-  );
-}
+const { moduleExists } = require('./helpers');
 
 module.exports = function createCartridgeAliasResolver(
   cartridgePath,
@@ -23,10 +15,13 @@ module.exports = function createCartridgeAliasResolver(
       const modulePath = `${cartridgesDir}/${cartridge}/${requestedModule}`;
       console.debug(`[PLAYGROUND] Searching for module "${modulePath}"`);
 
-      if (moduleExists(modulePath)) {
+      const finalPath = moduleExists(modulePath);
+      if (finalPath) {
         console.debug(
           `[PLAYGROUND] Alias found (${cartridgesDir}/${cartridge}/cartridge)`
         );
+        requireChain.push({ from: fromTarget, result: finalPath });
+
         return `${cartridgesDir}/${cartridge}/cartridge`;
       }
     }

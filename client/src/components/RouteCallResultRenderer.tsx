@@ -11,6 +11,7 @@ import { Events } from './renderers/Events';
 import { LogMessages } from './renderers/LogMessages';
 import { RawResponse } from './renderers/RawResponse';
 import { CallError } from './renderers/CallError';
+import { RequireChain } from './renderers/RequireChain';
 
 interface Props {
   result: RouteCallResult | RouteCallError | 'loading';
@@ -34,6 +35,7 @@ function RouteCallResultRenderer({ result }: Props) {
       <Events eventKey="events" result={result} />
       <LogMessages eventKey="log" result={result} />
       <RawResponse eventKey="raw" result={result} />
+      <RequireChain eventKey="requireChain" result={result} />
     </Accordion>
   );
 }
