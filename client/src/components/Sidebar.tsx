@@ -102,7 +102,7 @@ function Sidebar() {
                           inline
                           name={action}
                           type="checkbox"
-                          id={`action-${action}`}
+                          id={`${route.name}-action-${action}`}
                           label={action}
                           className="metismenu-link"
                           checked={
