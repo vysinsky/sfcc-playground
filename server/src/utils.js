@@ -61,6 +61,39 @@ function locateTemplate(templateName, locale) {
 }
 
 /**
+ * Locates form definition file respecting the locale
+ * @param templateName {string}
+ * @param locale {{ id: string }}
+ */
+function locateFormDefinitionFile(formName, locale) {
+  if (!formName.endsWith('.xml')) {
+    formName += '.xml';
+  }
+
+  const langCode = locale.id;
+
+  const localeFormFile = locateSingleFileInCartridges(
+    `forms/${langCode}/${formName}`
+  );
+
+  if (localeFormFile) {
+    return localeFormFile;
+  }
+
+  const defaultFormFile = locateSingleFileInCartridges(
+    `forms/default/${formName}`
+  );
+
+  if (defaultFormFile) {
+    return defaultFormFile;
+  }
+
+  throw new Error(
+    `Form definition file for form "${formName}" (locale: ${langCode}) not found`
+  );
+}
+
+/**
  * Locates all files according to cartridge path.
  * Ignores non-existing cartridges.
  *
@@ -95,4 +128,5 @@ module.exports = {
   locateSingleFileInCartridges,
   locateAllFilesInCartridges,
   locateTemplate,
+  locateFormDefinitionFile,
 };
