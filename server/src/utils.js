@@ -1,7 +1,7 @@
 const { existsSync, realpathSync } = require('fs');
 
 /**
- * Locates single file according to cartridge path. Returns the first found file
+ * Locates a single file according to cartridge path. Returns the first found file
  * Ignores non-existing cartridges.
  *
  * @param path {string}
@@ -30,50 +30,13 @@ function locateSingleFileInCartridges(path) {
 }
 
 /**
- * Locates template respecting the locale
- * @param templateName {string}
- * @param locale {{ id: string }}
+ * Locates and returns first found localised file.
+ * @param path {string} Relative path with `{{locale}}` (example: forms/{{locale}}/profile.xml)
+ * @param locale {string}
  */
-function locateTemplate(templateName, locale) {
-  if (!templateName.endsWith('.isml')) {
-    templateName += '.isml';
-  }
-
-  const langCode = locale.id;
-
-  const localeTemplate = locateSingleFileInCartridges(
-    `templates/${langCode}/${templateName}`
-  );
-
-  if (localeTemplate) {
-    return localeTemplate;
-  }
-
-  const defaultTemplate = locateSingleFileInCartridges(
-    `templates/default/${templateName}`
-  );
-
-  if (defaultTemplate) {
-    return defaultTemplate;
-  }
-
-  throw new Error(`Template "${templateName}" (locale: ${langCode}) not found`);
-}
-
-/**
- * Locates form definition file respecting the locale
- * @param templateName {string}
- * @param locale {{ id: string }}
- */
-function locateFormDefinitionFile(formName, locale) {
-  if (!formName.endsWith('.xml')) {
-    formName += '.xml';
-  }
-
-  const langCode = locale.id;
-
+function locateSingleLocalisedFile(path, locale) {
   const localeFormFile = locateSingleFileInCartridges(
-    `forms/${langCode}/${formName}`
+    path.replace('{{locale}}', locale)
   );
 
   if (localeFormFile) {
@@ -81,16 +44,14 @@ function locateFormDefinitionFile(formName, locale) {
   }
 
   const defaultFormFile = locateSingleFileInCartridges(
-    `forms/default/${formName}`
+    path.replace('{{locale}}', 'default')
   );
 
   if (defaultFormFile) {
     return defaultFormFile;
   }
 
-  throw new Error(
-    `Form definition file for form "${formName}" (locale: ${langCode}) not found`
-  );
+  throw new Error(`File "${path}" (locale: ${locale}) not found`);
 }
 
 /**
@@ -127,6 +88,5 @@ function locateAllFilesInCartridges(path) {
 module.exports = {
   locateSingleFileInCartridges,
   locateAllFilesInCartridges,
-  locateTemplate,
-  locateFormDefinitionFile,
+  locateSingleLocalisedFile,
 };

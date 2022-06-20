@@ -58,16 +58,17 @@ describe('locateSingleFileInCartridges', () => {
   });
 });
 
-describe('locateTemplate', () => {
-  it('locates a template that exists (without extension)', () => {
+describe('locateSingleLocalisedFile', () => {
+  it('locates a default file that exists', () => {
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',
       cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
     };
 
-    const actual = utils.locateTemplate('home/homePage', {
-      id: 'en_US',
-    });
+    const actual = utils.locateSingleLocalisedFile(
+      'templates/{{locale}}/home/homePage.isml',
+      'en_US'
+    );
 
     expect(actual.path).toMatch(
       /__mocks__\/cartridges\/cartridge_a\/cartridge\/templates\/default\/home\/homePage\.isml/
@@ -75,51 +76,37 @@ describe('locateTemplate', () => {
     expect(actual.cartridge).toBe('cartridge_a');
   });
 
-  it('throws error for non-existing template', () => {
+  it('locates a localised file that exists', () => {
+    global.playgroundConfig = {
+      cartridgePath: 'cartridge_a',
+      cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
+    };
+
+    const actual = utils.locateSingleLocalisedFile(
+      'templates/{{locale}}/home/homePage.isml',
+      'fr_FR'
+    );
+
+    expect(actual.path).toMatch(
+      /__mocks__\/cartridges\/cartridge_a\/cartridge\/templates\/fr_FR\/home\/homePage\.isml/
+    );
+    expect(actual.cartridge).toBe('cartridge_a');
+  });
+
+  it('throws error for non-existing file', () => {
     global.playgroundConfig = {
       cartridgePath: 'cartridge_a',
       cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
     };
 
     expect(() => {
-      utils.locateTemplate('home/nonExistingTemplate', {
-        id: 'en_US',
-      });
+      utils.locateSingleLocalisedFile(
+        'templates/{{locale}}/home/nonExistingTemplate.isml',
+        'en_US'
+      );
     }).toThrow(
-      'Template "home/nonExistingTemplate.isml" (locale: en_US) not found'
+      'File "templates/{{locale}}/home/nonExistingTemplate.isml" (locale: en_US) not found'
     );
-  });
-
-  it('locates a template that exists (with extension)', () => {
-    global.playgroundConfig = {
-      cartridgePath: 'cartridge_a',
-      cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
-    };
-
-    const actual = utils.locateTemplate('home/homePage.isml', {
-      id: 'en_US',
-    });
-
-    expect(actual.path).toMatch(
-      /__mocks__\/cartridges\/cartridge_a\/cartridge\/templates\/default\/home\/homePage\.isml/
-    );
-    expect(actual.cartridge).toBe('cartridge_a');
-  });
-
-  it('locates a template for the locale', () => {
-    global.playgroundConfig = {
-      cartridgePath: 'cartridge_a',
-      cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
-    };
-
-    const actual = utils.locateTemplate('home/homePage.isml', {
-      id: 'fr_FR',
-    });
-
-    expect(actual.path).toMatch(
-      /__mocks__\/cartridges\/cartridge_a\/cartridge\/templates\/fr_FR\/home\/homePage\.isml/
-    );
-    expect(actual.cartridge).toBe('cartridge_a');
   });
 
   it('locates a template for the locale while using multiple cartridges', () => {
@@ -128,9 +115,10 @@ describe('locateTemplate', () => {
       cartridgesDir: realpathSync(`${__dirname}/../../__mocks__/cartridges`),
     };
 
-    const actual = utils.locateTemplate('home/homePage.isml', {
-      id: 'cs_CZ',
-    });
+    const actual = utils.locateSingleLocalisedFile(
+      'templates/{{locale}}/home/homePage.isml',
+      'cs_CZ'
+    );
 
     expect(actual.path).toMatch(
       /__mocks__\/cartridges\/cartridge_b\/cartridge\/templates\/cs_CZ\/home\/homePage\.isml/

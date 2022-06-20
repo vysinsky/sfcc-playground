@@ -1,4 +1,4 @@
-const { locateFormDefinitionFile } = require('../utils');
+const { locateSingleLocalisedFile } = require('../utils');
 const { readFileSync } = require('cosmiconfig/dist/readFile');
 const xml2js = require('xml2js');
 const FormGroup = require('dw/web/FormGroup');
@@ -22,9 +22,13 @@ class FormsLoader {
   }
 
   getForm(formName) {
-    const { cartridge, path } = locateFormDefinitionFile(
-      formName,
-      request.locale
+    if (!formName.endsWith('.xml')) {
+      formName += '.xml';
+    }
+
+    const { cartridge, path } = locateSingleLocalisedFile(
+      `forms/{{locale}}/${formName}`,
+      request.locale.id
     );
 
     let formDefinition;
