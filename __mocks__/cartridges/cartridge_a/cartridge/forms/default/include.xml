@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<form xmlns="http://www.demandware.com/xml/form/2008-04-19" secure="false">
+    <field
+            formid="includedField"
+            label="label.input.includedField.profile"
+            mandatory="true"
+            min-length="8"
+            max-length="255"
+            range-error="error.message.8_255characters"
+            value-error="ValueErrorText"
+            type="string"/>
+</form>

@@ -1,8 +1,10 @@
-const { locateSingleLocalisedFile } = require('../utils');
-const { readFileSync } = require('cosmiconfig/dist/readFile');
+const { readFileSync } = require('fs');
 const xml2js = require('xml2js');
+
 const FormGroup = require('dw/web/FormGroup');
 const FormField = require('dw/web/FormField');
+
+const { locateSingleLocalisedFile } = require('../utils');
 
 class FormsLoader {
   constructor() {
