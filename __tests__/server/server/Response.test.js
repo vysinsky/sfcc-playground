@@ -89,7 +89,7 @@ describe('Response', () => {
         ],
         "requireChain": Array [],
         "statusCode": undefined,
-        "view": "template",
+        "view": "template.isml",
         "viewData": Object {
           "render": Object {
             "lastUpdateFrom": "test_cartridge",
