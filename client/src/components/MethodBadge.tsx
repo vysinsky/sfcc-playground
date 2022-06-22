@@ -1,19 +1,19 @@
 import React from 'react';
 import { Badge } from 'react-bootstrap';
 
+import { getMethodBadgeBg } from '../utils';
+
 type Props = {
   method: 'GET' | 'POST';
 };
 
-function getBadgeBg(method: 'GET' | 'POST') {
-  switch (method) {
-    case 'GET':
-      return 'primary';
-    case 'POST':
-      return 'info';
-  }
-}
-
 export function MethodBadge({ method }: Props) {
-  return <Badge bg={getBadgeBg(method)}>{method}</Badge>;
+  return (
+    <Badge
+      bg="custom"
+      style={{ backgroundColor: `var(--bs-${getMethodBadgeBg(method)})` }}
+    >
+      {method}
+    </Badge>
+  );
 }

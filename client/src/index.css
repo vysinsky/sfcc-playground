@@ -13,3 +13,7 @@ a {
   text-decoration: none !important;
   outline: none !important;
 }
+
+.adjust-box-shadow-color:focus {
+  box-shadow: 0 0 0 0.1rem currentColor;
+}
