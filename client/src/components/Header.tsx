@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import './Header.css';
 import { Col, Form, Row } from 'react-bootstrap';
-import { PlaygroundContext } from './PlaygroundContext';
+import { usePlaygroundContext } from './PlaygroundContext';
 
 export function Header() {
   const {
-    simulateHttps,
-    enableHttpsSimulation,
-    disableHttpsSimulation,
-    locale,
-    setLocale,
-  } = useContext(PlaygroundContext);
+    globalCallSettings: {
+      simulateHttps,
+      enableHttpsSimulation,
+      disableHttpsSimulation,
+      locale,
+      setLocale,
+    },
+  } = usePlaygroundContext();
 
   return (
     <div>

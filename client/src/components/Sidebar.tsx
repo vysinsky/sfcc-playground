@@ -1,16 +1,15 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import $ from 'jquery';
 
 import 'metismenu/dist/metisMenu.min.css';
 import 'metismenu';
 import './Sidebar.css';
-import { PlaygroundContext } from './PlaygroundContext';
+import { usePlaygroundContext } from './PlaygroundContext';
 import { SelectedRoutes } from '../types';
 import { Button, Form } from 'react-bootstrap';
 
 function Sidebar() {
-  const { routes, selectedRoutes, setSelectedRoutes } =
-    useContext(PlaygroundContext);
+  const { routes, selectedRoutes, setSelectedRoutes } = usePlaygroundContext();
 
   useEffect(() => {
     $('.metismenu').metisMenu();

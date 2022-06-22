@@ -88,9 +88,11 @@ export function ExecutionSummaryCard({
   );
 
   return (
-    <Card>
+    <Card className="mb-2">
       <Card.Header>
-        Execution summary (click label or progressbar to filter)
+        <strong>
+          Execution summary (click label or progressbar to filter)
+        </strong>
       </Card.Header>
       <Card.Body>
         <Row>

@@ -5,22 +5,49 @@ export type SelectedRoutes = {
 };
 
 export type RouteCallResults = {
-  [key: string]: RouteCallResult | RouteCallError | 'loading';
+  [key: string]: SettledPlaygroundApiCallResult | 'loading';
+};
+
+export type ManualCallInput = {
+  method: 'GET' | 'POST';
+  url: string;
+  query: string;
+  body: string;
+  header: string;
+};
+
+export type ManualExecutor = {
+  execute: (input: ManualCallInput) => Promise<void>;
+  lastCallResult: PlaygroundApiCallResult;
+  clearLastCallResult: () => void;
+  history: SettledPlaygroundApiCallResult[];
+  clearHistory: () => void;
+};
+
+export type BatchExecutor = {
+  execute: () => Promise<void>;
+  executeSingle: (route: string) => Promise<void>;
+  results: RouteCallResults;
+  resultsCount: number;
+  clearResults: () => void;
 };
 
 export type PlaygroundContextType = {
-  loaded: boolean;
+  routesLoaded: boolean;
   routes: Route[];
+  routesCount: number;
   selectedRoutes: SelectedRoutes;
-  simulateHttps: boolean;
-  locale: string;
-  enableHttpsSimulation: () => void;
-  disableHttpsSimulation: () => void;
+  selectedRoutesCount: number;
   setSelectedRoutes: React.Dispatch<React.SetStateAction<SelectedRoutes>>;
-  executeRoute: (route: string) => Promise<void>;
-  routeCallStatus: RouteCallResults;
-  setRouteCallStatus: React.Dispatch<React.SetStateAction<RouteCallResults>>;
-  setLocale: React.Dispatch<React.SetStateAction<string>>;
+  globalCallSettings: {
+    simulateHttps: boolean;
+    locale: string;
+    enableHttpsSimulation: () => void;
+    disableHttpsSimulation: () => void;
+    setLocale: React.Dispatch<React.SetStateAction<string>>;
+  };
+  batchExecutor: BatchExecutor;
+  manualExecutor: ManualExecutor;
 };
 
 export type Route = {
@@ -29,12 +56,22 @@ export type Route = {
   metadata: { [key: string]: { method: 'GET' | 'POST' } };
 };
 
+export type PlaygroundRequest = {
+  url: string | undefined;
+  executedAt: Date | undefined;
+  method: 'GET' | 'POST';
+  query: string;
+  body?: string;
+  header?: string;
+};
+
 export type RouteCallError = {
   isError: true;
   status: number;
   statusText: string;
   response?: string;
   requireChain?: [{ from: string; result: string }];
+  request: PlaygroundRequest;
 };
 
 export type RouteCallResult = {
@@ -51,22 +88,15 @@ export type RouteCallResult = {
   messageLog: { message: string; cartridge: string }[];
   statusCode: number;
   requireChain?: [{ from: string; result: string }];
+  request: PlaygroundRequest;
 };
 
-export type PlaygroundConfiguration = {
-  rootDir: string;
-  cartridgesDir: string;
-  cartridgePath: string;
-  apiPort: number;
-};
-
-export type ServerExports = {
-  [key: string]: Function & {
-    public?: boolean;
-  };
-} & {
-  __routes?: { [key: string]: any };
-};
+export type PlaygroundApiCallResult =
+  | RouteCallResult
+  | RouteCallError
+  | 'loading'
+  | undefined;
+export type SettledPlaygroundApiCallResult = RouteCallResult | RouteCallError;
 
 export type ViewDataRecord = {
   value: any;
@@ -82,11 +112,4 @@ export type Rendering = {
   aspectAttributes?: object;
   message?: string;
   renderedFrom: string;
-};
-
-export type RouteStepError = {
-  ErrorText: string;
-  ControllerName: string;
-  CurrentStartNodeName: string;
-  message?: string;
 };
