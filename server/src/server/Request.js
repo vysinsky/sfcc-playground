@@ -76,7 +76,7 @@ class Request {
   }
 
   get httpHeaders() {
-    return this.expressRequest;
+    return this.expressRequest.headers;
   }
 
   constructor(expressRequest, customer, session) {
