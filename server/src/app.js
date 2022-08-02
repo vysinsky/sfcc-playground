@@ -33,6 +33,14 @@ const Module = require('module');
 
 const app = express();
 
+app.use((req, res, next) => {
+  Object.keys(require.cache).forEach(function (key) {
+    delete require.cache[key];
+  });
+
+  next();
+});
+
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 app.get('/api/routes', (req, res, next) => {
